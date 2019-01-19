@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" href="{% static '/dashboard/img/eye.png' %}">
+    <link rel="stylesheet" href={% static "dashboard/css/bootstrap.min.css" %}>
+    <link rel="stylesheet" href={% static "dashboard/css/top/themes/image.css" %}>
+    <link rel="stylesheet" href={% static "dashboard/css/font-awesome.min.css" %}>
+    <link rel="stylesheet" href={% static "dashboard/css/style.css" %}>
+    {% block addstyle %}{% endblock %}
+</head>
+<body>
+<div class="container" style="margin-top: 120px">
+    {% block conetnt %}
+    {% endblock %}
+</div>
+<div class="container">
+    <div class="row align-content-center">
+        <div class="col"></div>
+        <div class="col">
+            <footer class="footer navbar-fixed-bottom fixed-bottom">
+            <div class="container text-center text-secondary">
+                Copyright© 2017-<script>document.write(new Date().getFullYear());</script> Elloit King Team
+            </div>
+            </footer>
+        </div>
+        <div class="col"></div>
+    </div>
+</div>
+<script src={% static "dashboard/js/jquery-3.3.1.min.js" %}></script>
+<script src={% static "dashboard/js/popper.min.js" %}></script>
+<script src={% static "dashboard/js/bootstrap.min.js" %}></script>
+<script src={% static "dashboard/js/jquery.scrollUp.min.js" %}></script>
+<script src={% static "dashboard/js/top.js" %}></script>
+{% block addscript %}{% endblock %}
+</body>
+</html>

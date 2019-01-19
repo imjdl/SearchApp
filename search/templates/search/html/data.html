@@ -1,0 +1,82 @@
+{% extends 'search/base.html' %}
+{% load static %}
+{% block title %}
+    {{ ip }} 的详细信息
+{% endblock %}
+{% block ex_style %}
+    <link rel="stylesheet" href="{% static 'search/css/data.css' %}">
+{% endblock %}
+{% block body %}
+<br>
+<br>
+<br>
+<div class="container" style="width: 80%">
+    <div class="container row">
+        <div class="container col-md-12">
+            <h3>SearchWebApp</h3>
+        </div>
+        <br>
+        <br>
+        <div class="col-md-12">
+            <h3>{{ ip }}</h3>
+        </div>
+    </div>
+    <hr style="border-color: white">
+    <!--数据部分-->
+    <div class="container">
+        <!--基本信息-->
+        <h3>基本信息</h3>
+        <div class="container row">
+            <div class="col-md-6">
+                <p>地址:&emsp;<span><a target="_blank" href="">{{ ip }}</a></span></p>
+                <p>洲:&emsp;<span>亚洲</span></p>
+                <p>国家:&emsp;<span>中国</span></p>
+                <p>城市:&emsp;<span>新乡</span></p>
+                <p>北纬:&emsp;<span>123</span></p>
+                <p>东经:&emsp;<span>66</span></p>
+                <p>时区:&emsp;<span>东八区</span></p>
+                <p>系统:&emsp;<span>Ubunt14.0.2</span></p>
+            </div>
+            <div class="col-md-6">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>端口</th>
+                            <th>服务</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in ports %}
+                        <tr>
+                            <td>{{ i.0 }}</td>
+                            <td>{{ i.1 }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--end-->
+        <hr style="border-color: white">
+        {% for data in datas %}
+            <div class="container row">
+            <div class="col-md-12">
+                <h3>{{ data.port }}</h3>
+            </div>
+            <div class="container col-md-6">
+                设备
+                <p>服务:&emsp;<span>{{ data.server }}</span></p>
+                <p>指纹:&emsp;<span>{{ data.web_type }}</span></p>
+                <p>标题:&emsp;<span>{{ data.title }}</span></p>
+                <p>响应:&emsp;<span>{{ data.state_code }}</span></p>
+                <p>时间:&emsp;<span>{{ data.date }}</span></p>
+            </div>
+            <div class="container col-md-6">
+                <pre class="code_pre">{{ data.body }}</pre>
+            </div>
+        </div>
+            <hr>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

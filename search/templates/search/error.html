@@ -1,0 +1,37 @@
+{% extends 'search/base.html' %}
+{% load static %}
+{% block title %}
+    {{ msg }}
+{% endblock %}
+{% block ex_style %}
+    <link rel="stylesheet" href="{% static 'search/css/data.css' %}">
+{% endblock %}
+{% block body %}
+<br>
+<br>
+<br>
+<div class="container" style="width: 80%">
+    <div class="container row">
+        <div class="container col-md-12">
+            <h3><a style="text-decoration: none;color: white" href="{% url "search:index" %}">SearchWebApp</a></h3>
+        </div>
+        <div class="container">
+            <form method="get" action="{% url "search:results" %}" class="form-inline">
+                <div class="form-group">
+                    <input type="text" name="search_msg" id="search_msg" value="{{ msg }}" class="form-control" >
+                    <input type="hidden" name="page" value="1"/>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="form-control btn btn-info" value="搜索">
+                </div>
+            </form>
+        </div>
+        <br>
+        <br>
+        <div class="col-md-12">
+            <p>Error: 语法错误</p>
+        </div>
+    </div>
+    <hr style="border-color: white">
+</div>
+{% endblock %}

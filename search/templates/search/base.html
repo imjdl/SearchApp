@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{% static '/search/img/eye.png' %}">
+    <title>{% block title %}SearchWebApp{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'search/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'search/css/top/themes/image.css' %}">
+    <link rel="stylesheet" href="{% static 'search/css/font-awesome.min.css' %}">
+    {% block ex_style %}
+        <link rel="stylesheet" href="{% static 'search/css/style.css' %}">
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+{% endblock %}
+
+<footer>
+    <p align="center" style="color: white" >
+        Copyright© 2017-<script>document.write(new Date().getFullYear());</script> Elloit King Team.</p>
+</footer>
+<script src="{% static 'search/js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'search/js/popper.min.js' %}"></script>
+<script src="{% static 'search/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'search/js/jquery.scrollUp.min.js' %}"></script>
+<script src="{% static 'search/js/top.js' %}"></script>
+</body>
+</html>

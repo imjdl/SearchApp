@@ -1,0 +1,20 @@
+{% extends 'search/base.html' %}
+{% load static %}
+{% block body %}
+<div class="place"></div>
+<div class="place"></div>
+<div class="container">
+    <div class="container" id="search_eye">
+        <img src="{% static 'search/img/SearchLogo.png' %}" class="img-fluid" alt="">
+    </div>
+    <br>
+    <div class="container" id="search_frame">
+        <form method="get" action="{% url "search:results" %}" onsubmit="return submit_data(this)">
+            <input name="search_msg" id="search_msg" type="text" placeholder="搜索:主机/网络设备/WEB容器" autocomplete="off" />
+            <input type="hidden" name="page" value="1"/>
+        </form>
+    </div>
+</div>
+<div class="place"></div>
+<div class="place"></div>
+{% endblock %}

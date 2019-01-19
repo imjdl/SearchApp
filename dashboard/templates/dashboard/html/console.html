@@ -1,0 +1,123 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}
+控制台
+{% endblock %}
+{% block conetnt %}
+    {% include 'dashboard/section/nav.html' %}
+<div class="container row">
+    <div class="col-md-12">
+        <input type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" value="NEW JOB">
+    </div>
+    <hr>
+    <br>
+    <br>
+    <br>
+    <div class="col-md-12">
+        <table class="table">
+            <thead>
+                <td>标题</td>
+                <td>目标端口</td>
+                <td>源端口</td>
+                <td>ip范围</td>
+                <td>网卡</td>
+                <td>本地ip</td>
+                <td>创建时间</td>
+                <td>状态</td>
+                <td>进度</td>
+            </thead>
+            <tbody id="jobtable">
+{#                <tr>#}
+{#                    <td>1</td>#}
+{#                    <td>测试</td>#}
+{#                    <td>80</td>#}
+{#                    <td>10086</td>#}
+{#                    <td>210.43.32.30/24</td>#}
+{#                    <td>wlan0</td>#}
+{#                    <td>10.100.42.22</td>#}
+{#                    <td>就绪</td>#}
+{#                    <td>#}
+{#                        <button class="btn btn-info">点击开始</button>#}
+{#                    </td>#}
+{#                </tr>#}
+{#                <tr>#}
+{#                    <td>2</td>#}
+{#                    <td>测试</td>#}
+{#                    <td>80</td>#}
+{#                    <td>10086</td>#}
+{#                    <td>210.43.32.30/24</td>#}
+{#                    <td>wlan0</td>#}
+{#                    <td>10.100.42.22</td>#}
+{#                    <td>执行中</td>#}
+{#                    <td>#}
+{#                        <div class="progress">#}
+{#                            <div class="progress-bar bg-danger" style="width:70%"></div>#}
+{#                        </div>#}
+{#                    </td>#}
+{#                </tr>#}
+            </tbody>
+        </table>
+    </div>
+</div>
+    <!-- 模态框 -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- 模态框头部 -->
+            <div class="modal-header">
+                <h4 class="modal-title">创建新任务</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- 模态框主体 -->
+            <div class="modal-body">
+                <form action="#" method="post" name="jobdata">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="title">标题</label>
+                        <input type="text" placeholder="任务标题" class="form-control" name="title" id="title"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="desc">任务描述</label>
+                        <textarea class="form-control" style="resize: none" placeholder="简单描述你的任务" rows="5" name="desc" id="desc"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="dsr_port">目标端口</label>
+                        <input type="text" placeholder="目标端口 比如:8080" class="form-control" name="dst_port" id="dsr_port"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="src_port">源端口</label>
+                        <input type="text" placeholder="源端口 比如:10086" class="form-control" name="src_port" id="src_port"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="ip">IP范围</label>
+                        <input type="text" placeholder="B段或C段 比如:192.168.1.1/24 or 192.168.1.1/16" class="form-control" name="ip" id="ip"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="networkcard">选择网卡</label>
+                        <select class="form-control" name="networkcard" id="networkcard">
+                            <option value='' disabled selected style='display:none;'>选择网卡</option>
+                            {% for interface in interfaces %}
+                                <option value="{{ interface }}">{{ interface }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <!-- 模态框底部 -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="checkdata()">确定</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block addscript %}
+    <script>
+        var submit_create_url = "{% url "dashboard:create" %}";
+    </script>
+    <script src="{% static 'dashboard/js/console.js' %}"></script>
+{% endblock %}

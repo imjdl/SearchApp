@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 from django.core.paginator import Paginator
 from esapi.ElasticSearch import ElastciSearch
 import time
@@ -33,16 +34,30 @@ def results(request):
         datas = []
         for i in res["hits"]:
             data = {}
-            data["ip"] = i["_source"]["ip"]
-            data["state_code"] = i["_source"]["state_code"]
-            # data["header"] = i["_source"]["header"]
-            data["body"] = i["_source"]["body"].strip()
-            data["title"] = i["_source"]["title"]
-            data["server"] = i["_source"]["server"]
-            data["x-powered-by"] = i["_source"]["x-powered-by"]
-            data["web_type"] = i["_source"]["web_type"]
-            data["port"] = i["_source"]["port"]
-            data["date"] = i["_source"]["date"]
+            data["HOST"] = i["_source"]["HOST"]
+            data["PROTOCOL"] = i["_source"]["PROTOCOL"]
+            data["TITLE"] = i["_source"]["TITLE"]
+            data["PORT"] = str(i["_source"]["PORT"])
+            data["DATE"] = i["_source"]["DATE"]
+            data["VENDOR"] = i["_source"]["VENDOR"].strip()
+            data["OS"] = i["_source"]["OS"]
+            data["SERVER"] = i["_source"]["SERVER"]
+            data["SERVER_VERSION"] = i["_source"]["SERVER_VERSION"]
+            data["EXTRAINFO"] = i["_source"]["EXTRAINFO"]
+            data["BANNER"] = i["_source"]["BANNER"]
+            data["STATE_CODE"] = i["_source"]["STATE_CODE"]
+            data["HEADERS"] = i["_source"]["HEADERS"]
+            data["CONTENT"] = i["_source"]["CONTENT"]
+            # data["LOCATION"] = i["_source"]["date"]
+            data["TIME_ZONE"] = i["_source"]["TIME_ZONE"]
+            data["CONTINENT"] = i["_source"]["CONTINENT"]
+            data["COUNTRY"] = i["_source"]["COUNTRY"]
+            data["PROVINCE"] = i["_source"]["PROVINCE"]
+            data["CITY"] = i["_source"]["CITY"]
+            if "http" in data["PROTOCOL"]:
+                data["URI"] = "http://" + data["HOST"] + ":" + data["PORT"]
+            else:
+                data["URI"] = ""
             datas.append(data)
         pages = Paginator([x for x in range(res["total"])], 10)
 

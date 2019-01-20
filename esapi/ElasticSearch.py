@@ -8,10 +8,9 @@ os:linux;app:wordpress;ip:210.43.32.32/16;
 """
 
 from elasticsearch import Elasticsearch
-from elasticsearch.helpers import bulk
-from elasticsearch.exceptions import ConnectionError, ConnectionTimeout
-from config.baseconfig import ELASTICSEARCH_HOST_LIST, ES_MAPPING, ES_INDEX_NAME, ES_DOC_TYPE
+from config.baseconfig import ELASTICSEARCH_HOST_LIST, ES_INDEX_NAME, ES_DOC_TYPE
 import re
+
 
 class ElastciSearch(object):
 
@@ -19,89 +18,51 @@ class ElastciSearch(object):
         self.es = Elasticsearch(hosts=ELASTICSEARCH_HOST_LIST)
         self.index_name = ES_INDEX_NAME
         self.doc_type = ES_DOC_TYPE
-        if not self.es.indices.exists(index=self.index_name):
-            self.create_mapping()
-        self.search_type = ["os", "ip", "app", "title", "port", "code", "domain"]
+        # if not self.es.indices.exists(index=self.index_name):
+        #     self.create_mapping()
+        self.search_type = ["os", "ip", "app", "title", "port", "statecode", "protocol", "domain"]
         self.switch = {
             "os": self.getos,
             "app": self.getapp,
             "ip": self.getip,
             "title": self.gettitle,
             "port": self.getport,
-            "code": self.getstatecode,
+            "statecode": self.getstatecode,
+            "protocol": self.getprotocolmsg,
             "domain": self.getinfofordomain,
         }
 
-    def create_mapping(self):
-
-        """
-        创建mapping
-        """
-        try:
-            if not self.es.indices.exists(index=self.index_name):
-                self.es.indices.create(index=self.index_name, body=ES_MAPPING)
-        except ConnectionError as e:
-            print("ConnectionERROR: 请检查你的配置文件")
-
-    def bulk(self, datas):
-        """
-        批量导入
-        """
-        # 判断 index 是否存在
-        if not self.es.indices.exists(self.index_name):
-            print("索引不存在，请先创建索引")
-            return False
-        actions = []
-        for data in datas:
-            action = {
-                "_index": self.index_name,
-                "_type": self.doc_type,
-                "_id": data["ip"] + ":" + str(data["port"]),
-                "ip": data["ip"],
-                "state_code": data["state_code"],
-                "body": data["body"],
-                "date": data["date"],
-                "title": data["title"],
-                "server": data["server"],
-                "x-powered-by": data["x-powered-by"],
-                "header": data["header"],
-                "web_type": data["web_type"],
-                "port": data["port"],
-            }
-            actions.append(action)
-
-        bulk(client=self.es, actions=actions, index=self.index_name, doc_type=self.doc_type)
-
     def search(self, datas, page):
         """
-        datas is like os:linux;app:wordpress;ip:210.43.32.30/26;
-        or os:linux;app:wordpress;ip:210.43.32.30/26
+        datas is like os:linux & app:wordpress & ip:210.43.32.30/26;
+        or os:linux & app:wordpress & ip:210.43.32.30/26
         """
         if page < 0:
             page = 1
-        return self.analysis(datas, page)
+        return self._analysis(datas, page)
 
-    def analysis(self, datas, page):
+    def _analysis(self, datas, page):
         """
         分析搜索语句，返回es搜索的json
         :param datas:str
         :return: dict
         """
         datas = datas.lower()
-        if "=" not in datas:
+        if ":" not in datas:
             return self.getall(datas, page)
-        datas = datas.split(":")
+        datas = datas.split("&")
         if "" in datas:
             datas.remove("")
         keys = []
         values = []
         for data in datas:
-            key, value = data.split("=")
+            key, value = data.split(":")
+            key = key.strip()
+            value = value.strip()
             if key not in self.search_type:
                 return False, None
             keys.append(key)
             values.append(value)
-
         data = {}
         # 简单查询
         if len(keys) == 1:
@@ -124,7 +85,7 @@ class ElastciSearch(object):
             "query": {
                 "multi_match": {
                     "query": value,
-                    "fields": ["server^3", "title^2"]
+                    "fields": ["OS^4", "SERVER^3", "TITLE^2", "CONTENT^1"]
                 }
             },
             "from": (page - 1) * 10,
@@ -150,7 +111,7 @@ class ElastciSearch(object):
                 data = {
                     "query": {
                         "terms": {
-                            "ip": ips
+                            "HOST": ips
                         }
                     },
                     "from": (page - 1) * 10,
@@ -180,7 +141,7 @@ class ElastciSearch(object):
             "query": {
                 "multi_match": {
                     "query": value,
-                    "fields": ["web_type^5", "x-powered-by^4", "server^3", "title^2", "body^1"]
+                    "fields": ["BANNER^5", "SERVER^4", "TITLE^3", "CONTENT^2"]
                 }
             },
             "from": (page - 1) * 10,
@@ -192,7 +153,7 @@ class ElastciSearch(object):
         data = {
             "query": {
                 "match": {
-                    "title": value
+                    "TITLE": value
                 }
             },
             "from": (page - 1) * 10,
@@ -218,7 +179,7 @@ class ElastciSearch(object):
         data = {
             "query": {
                 "match": {
-                    "port": value
+                    "PORT": value
                 }
             },
             "from": (page - 1) * 10,
@@ -230,7 +191,7 @@ class ElastciSearch(object):
         data = {
             "query": {
                 "match": {
-                    "state_code": value
+                    "STATE_CODE": value
                 }
             },
             "from": (page - 1) * 10,
@@ -241,8 +202,19 @@ class ElastciSearch(object):
     def getinfofordomain(self, value, page):
         import socket
         ip = socket.gethostbyname(value)
-        print(ip)
         return self.getip(ip, page)
+
+    def getprotocolmsg(self, value, page):
+        data = {
+            "query": {
+                "match": {
+                    "PROTOCOL": value
+                }
+            },
+            "from": (page - 1) * 10,
+            "size": 10
+        }
+        return data
 
     # 获取一个ip的所有信息
     def getipmsg(self, value):
@@ -263,7 +235,6 @@ class ElastciSearch(object):
         组合查询
         """
         must = []
-
         for key, value in datas.items():
             must.append(self.switch[key](value, page)["query"])
         fiter = must.pop()
@@ -284,19 +255,9 @@ class ElastciSearch(object):
 
 
 def main():
-
     es = ElastciSearch()
-    # es.create_mapping()
-    # datas = [{
-    #     "ip": "210.43.32.30",
-    #     "state_code": 200,
-    #     "body": "a",
-    #     "header": "aa",
-    # }]
-    # es.bulk(index_name="searchwebapp", datas=datas)
-    # print(es.analysis("ip:210.43.32.30"))
-    # print(es.analysis("ip:210.43.32.1/24"))
-    es.analysis("ip:47.94.1.1/16;os:linux", 1)
+    res = es.search("statecode:200", 1)
+    print(res)
 
 
 if __name__ == '__main__':

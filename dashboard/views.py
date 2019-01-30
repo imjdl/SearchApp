@@ -28,7 +28,6 @@ def login(request):
             auth.login(request, user)
             return HttpResponseRedirect(next_url)
         else:
-            print(next_url)
             return render(request, 'dashboard/html/login.html', context={"msg": "用户名或密码错误", "next": next_url})
 
 

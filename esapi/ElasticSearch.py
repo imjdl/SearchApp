@@ -166,14 +166,14 @@ class ElastciSearch(object):
             "query": {
                 "multi_match": {
                     "query": value,
-                    "fields": ["title^5", "server^4", "x-powered-by^3", "web_type^2", "body^1"]
+                    "fields": ["TITLE^6", "HEADERS^5", "CONTENT^4", "SERVER^3", "BANNER^2", "EXTRAINFO^1"]
                 }
             },
             "from": (page-1)*10,
             "size": 10
         }
         res = self.es.search(index=self.index_name, doc_type=self.doc_type, body=data)
-        return res["hits"]
+        return res["hits"], value
 
     def getport(self, value, page):
         data = {
@@ -256,7 +256,8 @@ class ElastciSearch(object):
 
 def main():
     es = ElastciSearch()
-    res = es.search("statecode:200", 1)
+    # res = es.search("statecode:200", 1)
+    res = es.search("linux", 1)
     print(res)
 
 

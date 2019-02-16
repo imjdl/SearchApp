@@ -28,6 +28,9 @@ def results(request):
         return render(request, 'search/error.html', context={"msg": msg})
     start_time = time.time()
     res, keys = es.search(msg, page)
+    print(type(keys))
+    if not isinstance(keys, list):
+        keys = [keys]
     end_time = time.time()
     colors = ["badge-danger", "badge-info", "badge-light", "badge-primary", "badge-warning"]
     if res:

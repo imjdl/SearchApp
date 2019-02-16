@@ -1,30 +1,54 @@
-{% extends 'dashboard/base.html' %}
 {% load static %}
-{% block title %}
-    登录
-{% endblock %}
-{% block conetnt %}
-<div class="row align-items-center">
-        <div class="col"></div>
-        <div class="col">
-            <form action="{% url "dashboard:login" %}" method="post">
-                {% csrf_token %}
-                <div class="form-group">
-                    <img src="{% static 'dashboard/img/SearchLogo.png' %}" width="100%" alt="">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="icon" href="{% static '/dashboard/img/eye.png' %}">
+    <link href={% static "dashboard/css/bootstrap.min.css" %} rel="stylesheet">
+    <link href={% static "dashboard/css/sb-admin.css" %} rel="stylesheet">
+    <link href={% static "dashboard/css/plugins/morris.css" %} rel="stylesheet">
+    <link href={% static "dashboard/font-awesome/css/font-awesome.min.css" %} rel="stylesheet" type="text/css">
+<body style="background: url({% static '/dashboard/img/login_bg.jpg'%}) no-repeat; background-size: 100%;">
+    <div class="container">
+        <div class="container" style="width:35%;margin-top: 120px">
+            <div class="row align-items-center">
+                <div class="col"></div>
+                <div class="col">
+                    <form action="{% url "dashboard:login" %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <img src="{% static 'dashboard/img/SearchLogo.png' %}" width="100%" alt="">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="username" placeholder="用户名">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" name="password" placeholder="密码">
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="form-control btn btn-info" value="登录">
+                        </div>
+                        <input name="next" value="{{ next }}" hidden="hidden">
+                        <span class="text-danger">{{ msg }}</span>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" name="username" placeholder="用户名">
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-control" name="password" placeholder="密码">
-                </div>
-                <div class="form-group">
-                    <input type="submit" class="form-control btn btn-info" value="登录">
-                </div>
-                <input name="next" value="{{ next }}" hidden="hidden">
-                <span class="text-danger">{{ msg }}</span>
-            </form>
+                <div class="col"></div>
+            </div>
         </div>
-        <div class="col"></div>
-</div>
-{% endblock %}
+        <div class="container">
+            <div class="row align-content-center">
+                <div class="col"></div>
+                    <div class="col">
+                        <footer class="footer navbar-fixed-bottom fixed-bottom">
+                            <div class="container text-center text-white" style="color: white">
+                                Copyright© 2017-<script>document.write(new Date().getFullYear());</script> elloit
+                            </div>
+                        </footer>
+                    </div>
+                <div class="col"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

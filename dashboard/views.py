@@ -35,7 +35,6 @@ def login(request):
 def console(request):
     interfaces = netifaces.interfaces()
     jobs = Job.objects.all()
-
     return render(request, 'dashboard/html/console.html', context={"interfaces": interfaces})
 
 

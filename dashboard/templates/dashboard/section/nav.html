@@ -1,32 +1,179 @@
 {% load static %}
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
-    <a class="navbar-brand" href="#">
-            <img src="{% static 'dashboard/img/SearchLogo.png' %}" width="100%" alt="Logo" style="width:150px;">
-        </a>
-    <!-- Links -->
-    <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'dashboard:index' %}">首页</a>
-            </li>
-{#            <li class="nav-item">#}
-{#                <a class="nav-link" href="{% url 'dashboard:console' %}">控制台</a>#}
-{#            </li>#}
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">任务管理</a>
-                <div class="dropdown-menu">
-                      <a class="dropdown-item" href="#">端口扫描任务</a>
-                      <a class="dropdown-item" href="#">服务扫描任务</a>
-                      <a class="dropdown-item" href="#">漏洞扫描任务</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">历史记录</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">数据管理</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'dashboard:logout' %}">Logout</a>
-            </li>
-    </ul>
-</nav>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'dashboard:index' %}">
+                    <img src="{% static 'dashboard/img/SearchLogo.png' %}" width="100%" alt="Logo" style="width:150px;">
+                </a>
+            </div>
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b class="caret"></b></a>
+                    <ul class="dropdown-menu message-dropdown">
+                        <li class="message-preview">
+                            <a href="#">
+                                <div class="media">
+                                    <span class="pull-left">
+                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
+                                    </span>
+                                    <div class="media-body">
+                                        <h5 class="media-heading"><strong>elloit</strong>
+                                        </h5>
+                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
+                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="message-preview">
+                            <a href="#">
+                                <div class="media">
+                                    <span class="pull-left">
+                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
+                                    </span>
+                                    <div class="media-body">
+                                        <h5 class="media-heading"><strong>John Smith</strong>
+                                        </h5>
+                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
+                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="message-preview">
+                            <a href="#">
+                                <div class="media">
+                                    <span class="pull-left">
+                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
+                                    </span>
+                                    <div class="media-body">
+                                        <h5 class="media-heading"><strong>John Smith</strong>
+                                        </h5>
+                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
+                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="message-footer">
+                            <a href="#">Read All New Messages</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
+                    <ul class="dropdown-menu alert-dropdown">
+                        <li>
+                            <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
+                        </li>
+                        <li>
+                            <a href="#">Alert Name <span class="label label-primary">Alert Badge</span></a>
+                        </li>
+                        <li>
+                            <a href="#">Alert Name <span class="label label-success">Alert Badge</span></a>
+                        </li>
+                        <li>
+                            <a href="#">Alert Name <span class="label label-info">Alert Badge</span></a>
+                        </li>
+                        <li>
+                            <a href="#">Alert Name <span class="label label-warning">Alert Badge</span></a>
+                        </li>
+                        <li>
+                            <a href="#">Alert Name <span class="label label-danger">Alert Badge</span></a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">View All</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>elloit<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="{% url 'dashboard:logout' %}"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li class="active">
+                        <a href="{% url 'dashboard:index' %}"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#jiedian"><i class="fa fa-fw fa-bar-chart-o"></i> 扫描节点管理 <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="jiedian" class="collapse">
+                            <li>
+                                <a href="#">添加节点</a>
+                            </li>
+                            <li>
+                                <a href="#">节点列表</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#task"><i class="fa fa-fw fa-table"></i> 扫描任务管理 <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="task" class="collapse">
+                            <li>
+                                <a href="#">添加任务</a>
+                            </li>
+                            <li>
+                                <a href="#">任务列表</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                     <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#log"><i class="fa fa-fw fa-edit"></i> 后台日志管理 <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="log" class="collapse">
+                            <li>
+                                <a href="#">搜索日志</a>
+                            </li>
+                            <li>
+                                <a href="#">扫描日志</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#data"><i class="fa fa-fw fa-wrench"></i> 后台数据管理 <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="data" class="collapse">
+                            <li>
+                                <a href="#">搜索日志</a>
+                            </li>
+                            <li>
+                                <a href="#">扫描日志</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#user"><i class="fa fa-fw fa-wrench"></i> 用户数据管理 <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="user" class="collapse">
+                            <li>
+                                <a href="#">用户列表</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>

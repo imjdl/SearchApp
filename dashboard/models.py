@@ -3,6 +3,15 @@ from django.db import models
 # Create your models here.
 
 
+class scanner(models.Model):
+    """
+    扫描器
+    """
+    id = models.CharField(max_length=24, primary_key=True)
+    
+    pass
+
+
 class Job(models.Model):
     """
     一个任务

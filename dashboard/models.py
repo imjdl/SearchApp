@@ -12,7 +12,7 @@ class Scanner(models.Model):
     # scanner port
     scanner_port = models.IntegerField()
     # create scanner date
-    scanner_date = models.DateTimeField()
+    scanner_date = models.DateTimeField(auto_now=True)
     # scanner status 0: shutdown  1: runing 2: not install yet
     status_level = (
         (0, "shutdown"),
@@ -22,7 +22,7 @@ class Scanner(models.Model):
     scanner_status = models.IntegerField(choices=status_level)
 
     # es server config
-    scanner_es_host = models.GenericIPAddressField(protocol="ipv4")
+    scanner_es_hosts = models.TextField()
     scanner_es_port = models.IntegerField()
     scanner_es_user = models.CharField(max_length=10)
     scanner_es_pass = models.CharField(max_length=64)

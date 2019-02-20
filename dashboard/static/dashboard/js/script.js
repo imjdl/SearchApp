@@ -58,13 +58,13 @@ function create_scanner() {
 
     borker_elements = ParseDatas(getElements("form-borker"));
     var borker_type = new Array();
-    borker_type.push("borker_type");
+    borker_type.push("borker-type");
     borker_type.push(getId("borker-type").options[getId("borker-type").selectedIndex].value);
     borker_elements.push(borker_type);
 
     backend_elements = ParseDatas(getElements("form-backend"));
     var backend_type = new Array();
-    backend_type.push("backend_type");
+    backend_type.push("backend-type");
     backend_type.push(getId("backend-type").options[getId("backend-type").selectedIndex].value);
     backend_type.push(backend_type);
     backend_elements.push(backend_type);

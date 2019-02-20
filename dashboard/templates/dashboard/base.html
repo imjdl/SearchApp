@@ -10,6 +10,8 @@
     <meta name="description" content="">
     <meta name="author" content="elloit">
     <link rel="icon" href="{% static '/search/img/eye.png' %}">
+    {% block scripts_head %}{% endblock %}
+
     <title>{% block title %}{% endblock %}</title>
     <!-- Bootstrap Core CSS -->
     <link href={% static "dashboard/css/bootstrap.min.css" %} rel="stylesheet">
@@ -35,12 +37,14 @@
 <body>
 
     <div id="wrapper">
-
         <!-- Navigation -->
         {% include "dashboard/section/nav.html" %}
         {% block page-wrapper %}
         {% endblock %}
-
+    <footer>
+    <p align="center" style="color: white" >
+        Copyright© 2017-<script>document.write(new Date().getFullYear());</script> Elloit King Team.</p>
+    </footer>
     </div>
     <!-- /#wrapper -->
 
@@ -54,7 +58,7 @@
     <script src={% static "dashboard/js/plugins/morris/raphael.min.js" %}></script>
     <script src={% static "dashboard/js/plugins/morris/morris.min.js" %}></script>
     <script src={% static "dashboard/js/plugins/morris/morris-data.js" %}></script>
-    {% block scripts %}{% endblock %}
+    {% block scripts_end %}{% endblock %}
 </body>
 
 </html>

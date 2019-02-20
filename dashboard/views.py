@@ -39,6 +39,25 @@ def console(request):
 
 
 @login_required(login_url='/admin/login/')
+def create_scanner(request):
+    '''
+    create scanner
+    :param request:
+    :return: json
+    '''
+    # Judge request method
+    if request.method != "POST":
+        return render(request, "dashboard/html/create_scanner.html")
+    else:
+        return JsonResponse({"ok": "asdasd"})
+    # Parsing parameters
+
+    # Create scanner & write configuration
+
+    # Save to database
+
+
+@login_required(login_url='/admin/login/')
 def create(request):
     title = request.POST.get("title", None)
     desc = request.POST.get("desc", None)

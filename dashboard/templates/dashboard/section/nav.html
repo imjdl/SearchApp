@@ -120,13 +120,13 @@
                         <a href="{% url 'dashboard:index' %}"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#jiedian"><i class="fa fa-fw fa-bar-chart-o"></i> 扫描节点管理 <i class="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#jiedian"><i class="fa fa-fw fa-bar-chart-o"></i> Scan Node Manager <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="jiedian" class="collapse">
                             <li>
-                                <a href="#">添加节点</a>
+                                <a href="{% url  'dashboard:create_scanner'%}">Add Scan Node</a>
                             </li>
                             <li>
-                                <a href="#">节点列表</a>
+                                <a href="#">Scan Node List</a>
                             </li>
                         </ul>
                     </li>

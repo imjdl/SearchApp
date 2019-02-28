@@ -152,6 +152,16 @@ def scanner_list(request):
 
 
 @login_required(login_url='/admin/login/')
+def search_log(request):
+    return render(request, "dashboard/html/search_log.html")
+
+
+@login_required(login_url='/admin/login/')
+def search_log_api(request):
+    pass
+
+
+@login_required(login_url='/admin/login/')
 def create(request):
     title = request.POST.get("title", None)
     desc = request.POST.get("desc", None)

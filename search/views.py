@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.paginator import Paginator
 from esapi.ElasticSearch import ElastciSearch
+from search.models import SearchLog
 import time
 
 es = ElastciSearch()
@@ -31,6 +32,14 @@ def results(request):
     if not isinstance(keys, list):
         keys = [keys]
     end_time = time.time()
+    s = SearchLog()
+    if "HTTP_X_FORWARDED_FOR" in request.META.keys():
+        ip = request.META['HTTP_X_FORWARDED_FOR']
+    else:
+        ip = request.META['REMOTE_ADDR']
+    s.searcher_IP = ip
+    s.searcher_content = msg
+    s.save()
     colors = ["badge-danger", "badge-info", "badge-light", "badge-primary", "badge-warning"]
     if res:
         datas = []

@@ -158,7 +158,17 @@ def search_log(request):
 
 @login_required(login_url='/admin/login/')
 def search_log_api(request):
-    pass
+    from search.models import SearchLog
+    search_logs = SearchLog.objects.all()
+    logs = {"logs":[]}
+    for log in search_logs:
+        data = {}
+        data["id"] = log.id
+        data["ip"] = log.searcher_IP
+        data["date"] = log.searcher_date
+        data["content"] = log.searcher_content
+        logs["logs"].append(data)
+    return JsonResponse(data=logs, status=200)
 
 
 @login_required(login_url='/admin/login/')

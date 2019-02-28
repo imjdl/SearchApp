@@ -5,8 +5,10 @@ from django.db import models
 
 class Scanner(models.Model):
 
+    # scanner id
+    scanner_id = models.IntegerField(primary_key=True)
     # scanner token
-    scanner_token = models.CharField(max_length=24, primary_key=True)
+    scanner_token = models.CharField(max_length=24)
     # scanner ip
     scanner_ip = models.GenericIPAddressField(protocol="ipv4")
     # scanner port
@@ -17,7 +19,7 @@ class Scanner(models.Model):
     status_level = (
         (0, "shutdown"),
         (1, "runing"),
-        (2, "not install yet")
+        (2, "unable to connect")
     )
     scanner_status = models.IntegerField(choices=status_level)
 
@@ -48,7 +50,7 @@ class Scanner(models.Model):
     scanner_backend_db = models.CharField(max_length=10)
 
     def __str__(self):
-        return self.scanner_token
+        return self.scanner_ip + ":::" + str(self.scanner_port)
 
 
 class Job(models.Model):

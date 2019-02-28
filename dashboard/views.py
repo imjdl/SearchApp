@@ -87,6 +87,7 @@ def create_scanner(request):
     try:
         requests.get(url=scanner_url, timeout=(10, 15))
     except Exception as e:
+        print(e)
         return JsonResponse(data={"status": "failure", "info": "Scanner server connect timeout"}, status=401)
 
     scanner_url += "/install/?es_hosts=%s&es_port=%s&es_user=%s&es_pass=%s&backend_type=%s&backend_user=%s" \
@@ -132,6 +133,25 @@ def create_scanner(request):
 
 
 @login_required(login_url='/admin/login/')
+def scanner_list(request):
+    '''
+    get scanner list
+    :param request:
+    :return:
+    '''
+    scanners = Scanner.objects.all()
+    datas = {"datas": []}
+    for scanner in scanners:
+        data = {}
+        data["id"] = scanner.scanner_id
+        data["ip"] = scanner.scanner_ip
+        data["port"] = str(scanner.scanner_port)
+        data["status"] = str(scanner.scanner_status)
+        datas["datas"].append(data)
+    return render(request, "dashboard/html/scanner_list.html", context=datas)
+
+
+@login_required(login_url='/admin/login/')
 def create(request):
     title = request.POST.get("title", None)
     desc = request.POST.get("desc", None)
@@ -159,7 +179,7 @@ def create(request):
     data.append(job.start_time.strftime('%Y/%m/%d/%H:%M:%S'))
     data.append(job.status)
     data.append(job.progress_rate)
-    return JsonResponse({"msg": 1, "data":data})
+    return JsonResponse({"msg": 1, "data": data})
 
 
 def logout(request):

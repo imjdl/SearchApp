@@ -39,7 +39,12 @@ function ParseDatas(elements) {
 
 function makedata(array) {
     var data = "";
+    var element = ["es-user", "es-pass", "borker-user", "backend-user"];
     for(var i=0; i<array.length; i++){
+        if (array[i][1] == "" && !element.includes(array[i][0])){
+            mesage(array[i][0] + " can not be empty!!!", 0);
+            throw "stop execute"
+        }
         if (i == array.length -1){
             data += array[i][0] + "=" + array[i][1];
         }else {
@@ -77,11 +82,29 @@ function create_scanner() {
         + makedata(backend_elements);
     xmlhttp.send(data);
     xmlhttp.onreadystatechange = function(){
-        if (xmlhttp.readyState==4 && xmlhttp.status==200){
-            // document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
-            console.log("asdasd");
+        if (xmlhttp.readyState==4){
+            var res = toJson(xmlhttp.responseText);
+            if (xmlhttp.status==200){
+                 mesage(res["info"], 1);
+            }else {
+                 mesage(res["info"], 0);
+            }
         }
     };
-    console.log(create_scanner_url);
-    console.log(data);
+}
+
+function toJson(str) {
+    var json = (new Function("return" + str))();
+    return json;
+}
+
+function mesage(str, flag) {
+    getId("flag-success").innerText = "";
+    getId("flag-error").innerText = "";
+    if(flag == 0){
+        getId("flag-error").innerText = str;
+    }
+    if(flag == 1){
+        getId("flag-success").innerText = str;
+    }
 }

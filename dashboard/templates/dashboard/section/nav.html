@@ -120,56 +120,68 @@
                         <a href="{% url 'dashboard:index' %}"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#jiedian"><i class="fa fa-fw fa-bar-chart-o"></i> Scan Node Manager <i class="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#jiedian"><i class="fa fa-fw fa-bar-chart-o"></i> Node Manager <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="jiedian" class="collapse">
                             <li>
                                 <a href="{% url  'dashboard:create_scanner'%}">Add Scan Node</a>
                             </li>
                             <li>
-                                <a href="#">Scan Node List</a>
+                                <a href="{% url  'dashboard:scanner_list'%}">Scan Node List</a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#task"><i class="fa fa-fw fa-table"></i> 扫描任务管理 <i class="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#task"><i class="fa fa-fw fa-table"></i> Task Manager <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="task" class="collapse">
                             <li>
-                                <a href="#">添加任务</a>
+                                <a href="#">Add Scan Task</a>
                             </li>
                             <li>
-                                <a href="#">任务列表</a>
+                                <a href="#">Scan Task List</a>
                             </li>
                         </ul>
                     </li>
-
-                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#log"><i class="fa fa-fw fa-edit"></i> 后台日志管理 <i class="fa fa-fw fa-caret-down"></i></a>
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#log"><i class="fa fa-fw fa-edit"></i> Log Manager <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="log" class="collapse">
                             <li>
-                                <a href="#">搜索日志</a>
+                                <a href="#">Search Log</a>
                             </li>
                             <li>
-                                <a href="#">扫描日志</a>
+                                <a href="#">Scan Log</a>
                             </li>
                         </ul>
                     </li>
-
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#data"><i class="fa fa-fw fa-wrench"></i> 后台数据管理 <i class="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#data"><i class="fa fa-fw fa-wrench"></i> Data Manager <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="data" class="collapse">
                             <li>
-                                <a href="#">搜索日志</a>
+                                <a href="#">IP Data</a>
                             </li>
                             <li>
-                                <a href="#">扫描日志</a>
+                                <a href="#">Server Data</a>
+                            </li>
+                            <li>
+                                <a href="#">Vulnerability Data</a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#user"><i class="fa fa-fw fa-arrows-v"></i> 用户数据管理 <i class="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#bug"><i class="fa fa-fw fa-bug"></i> Vulnerability Manager <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="bug" class="collapse">
+                            <li>
+                                <a href="#">Add Vulnerability</a>
+                            </li>
+                            <li>
+                                <a href="#">Vulnerability List</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#user"><i class="fa fa-fw fa-arrows-v"></i> User Data Manager <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="user" class="collapse">
                             <li>
-                                <a href="#">用户列表</a>
+                                <a href="#">User List</a>
                             </li>
                         </ul>
                     </li>

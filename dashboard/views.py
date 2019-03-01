@@ -161,18 +161,29 @@ def search_log(request):
 @login_required(login_url='/admin/login/')
 def search_log_api(request):
     page = request.GET.get("page", 1)
+    query = request.GET.get("query", None)
     try:
         page = int(page)
     except ValueError:
         page = 1
     from search.models import SearchLog
-    search_log_count = SearchLog.objects.count()
-    pages = Paginator([x for x in range(search_log_count)], 10)
-    if page > pages.num_pages:
-        page = pages.num_pages
-    if page < 1:
-        page = 1
-    search_logs = SearchLog.objects.order_by("-searcher_ID")[(page-1) * 10: page * 10]
+    if query == None:
+        search_log_count = SearchLog.objects.count()
+        pages = Paginator([x for x in range(search_log_count)], 10)
+        if page > pages.num_pages:
+            page = pages.num_pages
+        if page < 1:
+            page = 1
+        search_logs = SearchLog.objects.order_by("-searcher_ID")[(page-1) * 10: page * 10]
+    else:
+        search_logs = SearchLog.objects.filter(searcher_content__icontains=query)
+        search_log_count = len(search_logs)
+        pages = Paginator([x for x in range(search_log_count)], 10)
+        if page > pages.num_pages:
+            page = pages.num_pages
+        if page < 1:
+            page = 1
+        search_logs = search_logs[(page-1) * 10: page * 10]
     logs = {"logs": [], "page": page, "paginator": getpages(pages.num_pages, page)}
     for log in search_logs:
         data = {}
@@ -184,11 +195,10 @@ def search_log_api(request):
     return JsonResponse(data=logs, status=200)
 
 
-# @login_required(login_url='/admin/login/')
+@login_required(login_url='/admin/login/')
 def deletelog(request):
     from search.models import SearchLog
     id = request.GET.get("id", None)
-    print(id)
     if id == None:
         return JsonResponse(data={"status": False})
     try:

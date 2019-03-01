@@ -1,6 +1,10 @@
-function getData(page) {
+function getData(page, query) {
     var xmlhttp = Getxmlhttp();
-    xmlhttp.open("GET", search_log_api_url + "?page=" + page, true);
+    if(query){
+        xmlhttp.open("GET", search_log_api_url + "?page=" + page + "&query=" + query, true);
+    }else {
+        xmlhttp.open("GET", search_log_api_url + "?page=" + page, true);
+    }
     xmlhttp.send();
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState==4){
@@ -8,7 +12,7 @@ function getData(page) {
                 var data = toJson(xmlhttp.responseText);
                 var logs = data["logs"];
                 createtable(logs);
-                createPagebar(data["page"], data["paginator"]);
+                createPagebar(data["page"], data["paginator"], query);
             }
         }
     }
@@ -47,7 +51,7 @@ function createtable(logs) {
     }
 }
 
-function createPagebar(now_page, pages_vaul) {
+function createPagebar(now_page, pages_vaul, query) {
     var ul = getId("page-ul");
     // Previous
     var previous_li = document.createElement("li");
@@ -56,7 +60,11 @@ function createPagebar(now_page, pages_vaul) {
         previous_li.className = "page-item disabled";
     }else {
         previous_li.className = "page-item";
-        previous_a.href = search_log_url + "?page=" + (now_page - 1);
+        if(query){
+            previous_a.href = search_log_url + "?page=" + (now_page - 1) + "&query=" + query;
+        }else {
+            previous_a.href = search_log_url + "?page=" + (now_page - 1);
+        }
     }
     previous_a.className = "page-link";
     previous_a.innerText = "Previous";
@@ -69,7 +77,11 @@ function createPagebar(now_page, pages_vaul) {
         next_li.className = "page-item disabled";
     }else {
         next_li.className = "page-item";
-        next_a.href = search_log_url + "?page=" + (now_page + 1);
+        if(query){
+            next_a.href = search_log_url + "?page=" + (now_page + 1) + "&query=" + query;
+        }else {
+            next_a.href = search_log_url + "?page=" + (now_page + 1);
+        }
     }
     next_a.className = "page-link";
     next_a.innerText = "Next";
@@ -84,7 +96,11 @@ function createPagebar(now_page, pages_vaul) {
             li.className = "page-item";
         }
         a.className = "page-link";
-        a.href = search_log_url + "?page=" + pages_vaul[i];
+        if(query){
+            a.href = search_log_url + "?page=" + pages_vaul[i] + "&query=" + query;
+        }else {
+            a.href = search_log_url + "?page=" + pages_vaul[i];;
+        }
         a.innerText = pages_vaul[i];
         li.appendChild(a);
         ul.appendChild(li);
@@ -112,6 +128,48 @@ function deletelog(id){
     };
 }
 
+function getJsonFromUrl(url) {
+  if(!url) url = location.href;
+  var question = url.indexOf("?");
+  var hash = url.indexOf("#");
+  if(hash==-1 && question==-1) return {};
+  if(hash==-1) hash = url.length;
+  var query = question==-1 || hash==question+1 ? url.substring(hash) :
+  url.substring(question+1,hash);
+  var result = {};
+  query.split("&").forEach(function(part) {
+    if(!part) return;
+    part = part.split("+").join(" ");
+    var eq = part.indexOf("=");
+    var key = eq>-1 ? part.substr(0,eq) : part;
+    var val = eq>-1 ? decodeURIComponent(part.substr(eq+1)) : "";
+    var from = key.indexOf("[");
+    if(from==-1) result[decodeURIComponent(key)] = val;
+    else {
+      var to = key.indexOf("]",from);
+      var index = decodeURIComponent(key.substring(from+1,to));
+      key = decodeURIComponent(key.substring(0,from));
+      if(!result[key]) result[key] = [];
+      if(!index) result[key].push(val);
+      else result[key][index] = val;
+    }
+  });
+  return result;
+}
+
+function search(){
+    var conetnt = getId("search_content").value;
+    window.location.href = search_log_url + "?page=1&query=" + conetnt;
+}
 window.onload = function(){
-    getData(window.location.search.substr(6));
+    var data = getJsonFromUrl(window.location.href);
+    var query = null;
+    var page = 1;
+    if("page" in data){
+        page = data["page"];
+    }
+    if("query" in data){
+        query = data["query"];
+    }
+    getData(page, query);
 };

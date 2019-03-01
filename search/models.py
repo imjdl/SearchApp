@@ -16,6 +16,3 @@ class SearchLog(models.Model):
 
     def __str__(self):
         return self.searcher_IP + ":::" + self.searcher_content
-
-    class Meta:
-        ordering = ["-searcher_ID"]

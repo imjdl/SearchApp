@@ -131,7 +131,7 @@ def result(request, ip):
 
 def getpages(val, nowpage):
     if val < 10:
-        return range(1, val+1)
+        return [x for x in range(1, val + 1)]
     else:
         if nowpage - 1 <= 4:
             page_list = list(range(1, nowpage+3))
@@ -143,4 +143,4 @@ def getpages(val, nowpage):
             return [1] + ['...'] + page_list
         else:
             page_list = list(range(nowpage - 2, nowpage + 3))
-            return [1] + ['...'] + page_list + ['...'] +[val]
+            return [1] + ['...'] + page_list + ['...'] + [val]

@@ -2,7 +2,9 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.http import HttpResponseRedirect
 from django.contrib import auth
+from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
+
 import netifaces
 from .models import Job, Scanner
 from datetime import datetime
@@ -156,14 +158,25 @@ def search_log(request):
     return render(request, "dashboard/html/search_log.html")
 
 
-@login_required(login_url='/admin/login/')
+# @login_required(login_url='/admin/login/')
 def search_log_api(request):
+    page = request.GET.get("page", 1)
+    try:
+        page = int(page)
+    except ValueError:
+        page = 1
     from search.models import SearchLog
-    search_logs = SearchLog.objects.all()
-    logs = {"logs":[]}
+    search_log_count = SearchLog.objects.count()
+    pages = Paginator([x for x in range(search_log_count)], 10)
+    if page > pages.num_pages:
+        page = pages.num_pages
+    if page < 1:
+        page = 1
+    search_logs = SearchLog.objects.order_by("-searcher_ID")[(page-1) * 10: page * 10]
+    logs = {"logs": [], "page": page, "paginator": getpages(pages.num_pages, page)}
     for log in search_logs:
         data = {}
-        data["id"] = log.id
+        data["id"] = log.searcher_ID
         data["ip"] = log.searcher_IP
         data["date"] = log.searcher_date
         data["content"] = log.searcher_content
@@ -205,3 +218,20 @@ def create(request):
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect("/")
+
+
+def getpages(val, nowpage):
+    if val < 10:
+        return [x for x in range(1, val+1)]
+    else:
+        if nowpage - 1 <= 4:
+            page_list = list(range(1, nowpage+3))
+            page_list.append('...')
+            page_list.append(val)
+            return page_list
+        elif val - nowpage <= 4:
+            page_list = list(range(nowpage - 2, val+1))
+            return [1] + ['...'] + page_list
+        else:
+            page_list = list(range(nowpage - 2, nowpage + 3))
+            return [1] + ['...'] + page_list + ['...'] + [val]

@@ -41,6 +41,9 @@
                         <tbody id="search_log_table_tbody"></tbody>
                     </table>
                 </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination" id="page-ul"></ul>
+                </nav>
             </div>
         </div>
     </div>
@@ -48,6 +51,7 @@
 {% endblock %}
 {% block scripts_end %}
     <script>
+        var search_log_url = "{% url "dashboard:search_log" %}";
         var search_log_api_url = "{% url "dashboard:search_log_api" %}";
     </script>
     <script src="{% static "dashboard/js/search_log.js" %}"></script>

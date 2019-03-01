@@ -70,6 +70,7 @@ function create_scanner() {
             var res = toJson(xmlhttp.responseText);
             if (xmlhttp.status==200){
                  mesage(res["info"], 1);
+                 window.location.reload();
             }else {
                  mesage(res["info"], 0);
             }

@@ -158,7 +158,7 @@ def search_log(request):
     return render(request, "dashboard/html/search_log.html")
 
 
-# @login_required(login_url='/admin/login/')
+@login_required(login_url='/admin/login/')
 def search_log_api(request):
     page = request.GET.get("page", 1)
     try:
@@ -182,6 +182,24 @@ def search_log_api(request):
         data["content"] = log.searcher_content
         logs["logs"].append(data)
     return JsonResponse(data=logs, status=200)
+
+
+# @login_required(login_url='/admin/login/')
+def deletelog(request):
+    from search.models import SearchLog
+    id = request.GET.get("id", None)
+    print(id)
+    if id == None:
+        return JsonResponse(data={"status": False})
+    try:
+        id = int(id)
+    except Exception as e:
+        return JsonResponse(data={"status": False})
+    try:
+        SearchLog.objects.get(searcher_ID=id).delete()
+        return JsonResponse(data={"status": True})
+    except Exception as e:
+        return JsonResponse(data={"status": False})
 
 
 @login_required(login_url='/admin/login/')

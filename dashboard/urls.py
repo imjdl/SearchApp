@@ -10,5 +10,5 @@ urlpatterns = [
     url(r'scanner_list/', views.scanner_list, name="scanner_list"),
     url(r'search_log/', views.search_log, name="search_log"),
     url(r'search_log_api/', views.search_log_api, name="search_log_api"),
-
+    url(r'search_log_del/', views.deletelog, name="search_log_del"),
 ]

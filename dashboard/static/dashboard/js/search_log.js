@@ -28,8 +28,9 @@ function createtable(logs) {
         var td_btu = document.createElement("button");
         td_btu.innerText = "删除";
         td_btu.className = "btn btn-danger";
+        td_btu.value = log["id"];
         td_btu.addEventListener("click", function () {
-            alert(i);
+            deletelog(this.value);
         });
 
         td_id.innerText = log["id"];
@@ -96,6 +97,19 @@ function remoceChilds(node){
     for (var i=0; i<childs.length; i++){
         node.removeChild(childs[i]);
     }
+}
+
+function deletelog(id){
+    var xmlhttp = Getxmlhttp();
+    xmlhttp.open("GET", search_log_del_url+ "?id=" + id, true);
+    xmlhttp.send();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState==4){
+            if (xmlhttp.status==200){
+                window.location.reload()
+            }
+        }
+    };
 }
 
 window.onload = function(){

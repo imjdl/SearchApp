@@ -136,6 +136,11 @@ def create_scanner(request):
 
 @login_required(login_url='/admin/login/')
 def scanner_list(request):
+    return render(request, "dashboard/html/scanner_list.html")
+
+
+@login_required(login_url='/admin/login/')
+def scanner_list_api(request):
     '''
     get scanner list
     :param request:
@@ -150,7 +155,7 @@ def scanner_list(request):
         data["port"] = str(scanner.scanner_port)
         data["status"] = str(scanner.scanner_status)
         datas["datas"].append(data)
-    return render(request, "dashboard/html/scanner_list.html", context=datas)
+    return JsonResponse(data=datas, status=200)
 
 
 @login_required(login_url='/admin/login/')

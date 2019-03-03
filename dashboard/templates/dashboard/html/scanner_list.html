@@ -31,100 +31,15 @@
         </div>
         <!-- /.row -->
         <div class="row">
-            <div class="col-lg-4 col-md-6">
-            {% for data in datas %}
-                {% if data.status == "0" %}
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-close fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div>
-                                            <span class="badge badge-info" style="font-size: 20px">{{ data.ip }}</span>
-                                            <span class="badge badge-info" style="font-size: 20px">{{ data.port }}</span>
-                                            <hr>
-                                        </div>
-                                        <div>
-                                            <button class="btn btn-info btn-outline-dark">关闭</button>
-                                            <button class="btn btn-warning btn-outline-dark">重启</button>
-                                            <button class="btn btn-default btn-outline-dark">开启</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                            </a>
-                        </div>
-                    {% elif data.status == "1" %}
-                        <div class="panel panel-green">
-                            <div class="panel-heading">
-                                    <div class="row">
-                                        <div class="col-xs-3">
-                                            <i class="fa fa-smile-o fa-5x"></i>
-                                        </div>
-                                        <div class="col-xs-9 text-right">
-                                            <div>
-                                                <span class="badge badge-info" style="font-size: 20px">{{ data.ip }}</span>
-                                                <span class="badge badge-info" style="font-size: 20px">{{ data.port }}</span>
-                                                <hr>
-                                            </div>
-                                            <div>
-                                                <button class="btn btn-info btn-outline-dark">关闭</button>
-                                                <button class="btn btn-warning btn-outline-dark">重启</button>
-                                                <button class="btn btn-default btn-outline-dark">开启</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-                    {% elif data.status == "2" %}
-                        <div class="panel panel-red">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-chain-broken fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div>
-                                            <span class="badge badge-info" style="font-size: 20px">{{ data.ip }}</span>
-                                            <span class="badge badge-info" style="font-size: 20px">{{ data.port }}</span>
-                                            <hr>
-                                        </div>
-                                        <div>
-                                            <button class="btn btn-info btn-outline-info">关闭</button>
-                                            <button class="btn btn-warning btn-outline-info">重启</button>
-                                            <button class="btn btn-default btn-outline-info">开启</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-                {% endif %}
-            {% endfor %}
-            </div>
+            <div class="col-lg-4 col-md-6" id="scanner-list"></div>
         </div>
         <!-- /.row -->
     </div>
 </div>
+{% endblock %}
+{% block scripts_end %}
+    <script>
+        var scanner_list_api = "{% url "dashboard:scanner_list_api" %}";;
+    </script>
+    <script src="{% static "dashboard/js/scanner_list.js" %}"></script>
 {% endblock %}

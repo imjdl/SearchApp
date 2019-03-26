@@ -6,15 +6,8 @@
 
 ![](https://img.shields.io/badge/author-elloit-yellow.svg)
 
-
-
-
-
-
-
-
-
-
-
-
-
+# 说明
+不知道被哪位大佬翻了牌子，很多人star，这里说明一下。
+这个是我的毕业设计，还在做，部署的话请看issue。
+还没有完成，参考价值不大，也请各位谨慎star。
+Thanks :)

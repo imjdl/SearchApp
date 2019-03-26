@@ -1,0 +1,98 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}
+添加扫描任务
+{% endblock %}
+{% block scripts_head %}
+    <script>var create_scanner_url = "{% url "dashboard:create_scanner" %}";</script>
+    <script src={% static "dashboard/js/script.js" %}></script>
+{% endblock %}
+{% block page-wrapper %}
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Add Scan Task</h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i>  <a href="{% url 'dashboard:index' %}">Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-edit"></i> Add Scan Task
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <!-- Scanner base config -->
+            <div class="col-lg-3">
+                <form role="form" name="form-scanner-base" id="form-scanner-base">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Scanner Host Input</label>
+                        <input class="form-control" placeholder="Example: 192.168.1.1" name="scanner-host">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Scanner Port Input</label>
+                        <input class="form-control" placeholder="Example: 8080" name="scanner-port">
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-3">
+                <form role="form" name="form-scanner-base" id="form-scanner-base">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Scanner Host Input</label>
+                        <input class="form-control" placeholder="Example: 192.168.1.1" name="scanner-host">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Scanner Port Input</label>
+                        <input class="form-control" placeholder="Example: 8080" name="scanner-port">
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-3">
+                <form role="form" name="form-scanner-base" id="form-scanner-base">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Scanner Host Input</label>
+                        <input class="form-control" placeholder="Example: 192.168.1.1" name="scanner-host">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Scanner Port Input</label>
+                        <input class="form-control" placeholder="Example: 8080" name="scanner-port">
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-3">
+                <form role="form" name="form-scanner-base" id="form-scanner-base">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Scanner Host Input</label>
+                        <input class="form-control" placeholder="Example: 192.168.1.1" name="scanner-host">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Scanner Port Input</label>
+                        <input class="form-control" placeholder="Example: 8080" name="scanner-port">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="submit" class="btn btn-danger" onclick="">ADD SCAN TASK</button>
+                <span id="flag-error" class="text-danger"></span>
+                <span id="flag-success" class="text-info"></span>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</div>
+{% endblock %}

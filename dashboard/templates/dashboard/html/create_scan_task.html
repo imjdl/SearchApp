@@ -1,123 +1,249 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% block title %}
-控制台
+添加扫描任务
 {% endblock %}
-{% block conetnt %}
-    {% include 'dashboard/section/nav.html' %}
-<div class="container row">
-    <div class="col-md-12">
-        <input type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" value="NEW JOB">
-    </div>
-    <hr>
-    <br>
-    <br>
-    <br>
-    <div class="col-md-12">
-        <table class="table">
-            <thead>
-                <td>标题</td>
-                <td>目标端口</td>
-                <td>源端口</td>
-                <td>ip范围</td>
-                <td>网卡</td>
-                <td>本地ip</td>
-                <td>创建时间</td>
-                <td>状态</td>
-                <td>进度</td>
-            </thead>
-            <tbody id="jobtable">
-{#                <tr>#}
-{#                    <td>1</td>#}
-{#                    <td>测试</td>#}
-{#                    <td>80</td>#}
-{#                    <td>10086</td>#}
-{#                    <td>210.43.32.30/24</td>#}
-{#                    <td>wlan0</td>#}
-{#                    <td>10.100.42.22</td>#}
-{#                    <td>就绪</td>#}
-{#                    <td>#}
-{#                        <button class="btn btn-info">点击开始</button>#}
-{#                    </td>#}
-{#                </tr>#}
-{#                <tr>#}
-{#                    <td>2</td>#}
-{#                    <td>测试</td>#}
-{#                    <td>80</td>#}
-{#                    <td>10086</td>#}
-{#                    <td>210.43.32.30/24</td>#}
-{#                    <td>wlan0</td>#}
-{#                    <td>10.100.42.22</td>#}
-{#                    <td>执行中</td>#}
-{#                    <td>#}
-{#                        <div class="progress">#}
-{#                            <div class="progress-bar bg-danger" style="width:70%"></div>#}
-{#                        </div>#}
-{#                    </td>#}
-{#                </tr>#}
-            </tbody>
-        </table>
-    </div>
-</div>
-    <!-- 模态框 -->
-<div class="modal fade" id="myModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <!-- 模态框头部 -->
-            <div class="modal-header">
-                <h4 class="modal-title">创建新任务</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+{% block scripts_head %}
+    <script>var create_scanner_url = "{% url "dashboard:create_scanner" %}";</script>
+    <script src={% static "dashboard/js/script.js" %}></script>
+{% endblock %}
+{% block page-wrapper %}
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Add Scan Task</h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i>  <a href="{% url 'dashboard:index' %}">Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-edit"></i> Add Scan Task
+                    </li>
+                </ol>
             </div>
-
-            <!-- 模态框主体 -->
-            <div class="modal-body">
-                <form action="#" method="post" name="jobdata">
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <!-- Scanner base config -->
+            <div class="col-lg-6">
+                <h3>Base Config</h3>
+                <form role="form" name="form-scanner-base" id="form-task-base">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="title">标题</label>
-                        <input type="text" placeholder="任务标题" class="form-control" name="title" id="title"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="desc">任务描述</label>
-                        <textarea class="form-control" style="resize: none" placeholder="简单描述你的任务" rows="5" name="desc" id="desc"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="dsr_port">目标端口</label>
-                        <input type="text" placeholder="目标端口 比如:8080" class="form-control" name="dst_port" id="dsr_port"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="src_port">源端口</label>
-                        <input type="text" placeholder="源端口 比如:10086" class="form-control" name="src_port" id="src_port"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="ip">IP范围</label>
-                        <input type="text" placeholder="B段或C段 比如:192.168.1.1/24 or 192.168.1.1/16" class="form-control" name="ip" id="ip"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="networkcard">选择网卡</label>
-                        <select class="form-control" name="networkcard" id="networkcard">
-                            <option value='' disabled selected style='display:none;'>选择网卡</option>
-                            {% for interface in interfaces %}
-                                <option value="{{ interface }}">{{ interface }}</option>
-                            {% endfor %}
+                        <label for="scanners">Select scanner</label>
+                        <select class="form-control" id="scanners">
+                          <option>----------------</option>
+                          <option>192.168.1.1:8080</option>
+                          <option>192.168.1.2:8080</option>
+                          <option>192.168.1.3:8080</option>
+                          <option>192.168.1.4:8080</option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input class="form-control" placeholder="扫描80端口" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="scanners">Select Task</label>
+                        <select class="form-control" id="tasks">
+                            <option>----------------</option>
+                            <option>scanner_nmap.tasks.nmap_scan</option>
+                            <option>scanner_vul.tasks.vul_scan</option>
+                            <option>scanner_zmap.tasks.syn_scan</option>
+                            <option>scanner_zmap.tasks.udp_scan</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" id="enable" checked>
+                              <label class="form-check-label" for="enable">
+                                Enable
+                              </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Description:</label>
+                        <textarea class="form-control"></textarea>
                     </div>
                 </form>
             </div>
-            <!-- 模态框底部 -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-success" onclick="checkdata()">确定</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            <div class="col-lg-6">
+                <h3>Interval</h3>
+                <form role="form" name="form-scanner-base" id="form-task-schedule">
+                    <div class="form-group">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                              <label for="every">Every</label>
+                              <input type="text" class="form-control" id="every" placeholder="0">
+                            </div>
+                            <div class="form-group col-md-4">
+                              <label for="period">Period</label>
+                              <select id="period" class="form-control">
+                                  <option>...</option>
+                                  <option>Days</option>
+                                  <option>Hours</option>
+                                  <option>Minutes</option>
+                                  <option>Seconds</option>
+                                  <option>Microseconds</option>
+                              </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
+            <div class="col-lg-6">
+                <h3>Crontab</h3>
+                <form role="form" name="form-scanner-base" id="form-task-schedule">
+                    <div class="form-group">
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                              <label for="period2">Minute *****</label>
+                              <select id="period2" class="form-control">
+                                    <option>*</option>
+                                    <option>0</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option>
+                                    <option>11</option>
+                                    <option>12</option>
+                                    <option>13</option>
+                                    <option>14</option>
+                                    <option>15</option>
+                                    <option>16</option>
+                                    <option>17</option>
+                                    <option>18</option>
+                                    <option>19</option>
+                                    <option>20</option>
+                                    <option>21</option>
+                                    <option>22</option>
+                                    <option>23</option>
+                                    <option>24</option>
+                                    <option>25</option>
+                                    <option>26</option>
+                                    <option>27</option>
+                                    <option>28</option>
+                                    <option>29</option>
+                                    <option>30</option>
+                                    <option>31</option>
+                                    <option>32</option>
+                                    <option>33</option>
+                                    <option>34</option>
+                                    <option>35</option>
+                                    <option>36</option>
+                                    <option>37</option>
+                                    <option>38</option>
+                                    <option>39</option>
+                                    <option>40</option>
+                                    <option>41</option>
+                                    <option>42</option>
+                                    <option>43</option>
+                                    <option>44</option>
+                                    <option>45</option>
+                                    <option>46</option>
+                                    <option>47</option>
+                                    <option>48</option>
+                                    <option>49</option>
+                                    <option>50</option>
+                                    <option>51</option>
+                                    <option>52</option>
+                                    <option>53</option>
+                                    <option>54</option>
+                                    <option>55</option>
+                                    <option>56</option>
+                                    <option>57</option>
+                                    <option>58</option>
+                                    <option>59</option>
 
+                              </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                              <label for="period2">Hour *****</label>
+                              <select id="period2" class="form-control">
+                                  <option>...</option>
+                                  <option>Days</option>
+                                  <option>Hours</option>
+                                  <option>Minutes</option>
+                                  <option>Seconds</option>
+                                  <option>Microseconds</option>
+                              </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                              <label for="period2">Day of week</label>
+                              <select id="period2" class="form-control">
+                                  <option>...</option>
+                                  <option>Days</option>
+                                  <option>Hours</option>
+                                  <option>Minutes</option>
+                                  <option>Seconds</option>
+                                  <option>Microseconds</option>
+                              </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                              <label for="period2">Day of month</label>
+                              <select id="period2" class="form-control">
+                                  <option>...</option>
+                                  <option>Days</option>
+                                  <option>Hours</option>
+                                  <option>Minutes</option>
+                                  <option>Seconds</option>
+                                  <option>Microseconds</option>
+                              </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                              <label for="period2">Month of year</label>
+                              <select id="period2" class="form-control">
+                                  <option>...</option>
+                                  <option>Days</option>
+                                  <option>Hours</option>
+                                  <option>Minutes</option>
+                                  <option>Seconds</option>
+                                  <option>Microseconds</option>
+                              </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                              <label for="period2">Timezone *****</label>
+                              <select id="period2" class="form-control">
+                                  <option>...</option>
+                                  <option>Days</option>
+                                  <option>Hours</option>
+                                  <option>Minutes</option>
+                                  <option>Seconds</option>
+                                  <option>Microseconds</option>
+                              </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="submit" class="btn btn-danger" onclick="">ADD SCAN TASK</button>
+                <span id="flag-error" class="text-danger"></span>
+                <span id="flag-success" class="text-info"></span>
+            </div>
+        </div>
+        <!-- /.row -->
     </div>
+    <!-- /.container-fluid -->
 </div>
-{% endblock %}
-{% block addscript %}
-    <script>
-        var submit_create_url = "{% url "dashboard:create" %}";
-    </script>
-    <script src="{% static 'dashboard/js/console.js' %}"></script>
 {% endblock %}

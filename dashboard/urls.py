@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'search_log/', views.search_log, name="search_log"),
     url(r'search_log_api/', views.search_log_api, name="search_log_api"),
     url(r'search_log_del/', views.deletelog, name="search_log_del"),
+    url(r'create_scan_task/', views.create_scan_task, name="create_scan_task"),
 ]

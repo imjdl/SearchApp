@@ -89,7 +89,6 @@ def create_scanner(request):
     try:
         requests.get(url=scanner_url, timeout=(10, 15))
     except Exception as e:
-        print(e)
         return JsonResponse(data={"status": "failure", "info": "Scanner server connect timeout"}, status=401)
 
     scanner_url += "/install/?es_hosts=%s&es_port=%s&es_user=%s&es_pass=%s&backend_type=%s&backend_user=%s" \
@@ -218,34 +217,22 @@ def deletelog(request):
 
 
 @login_required(login_url='/admin/login/')
-def create(request):
-    title = request.POST.get("title", None)
-    desc = request.POST.get("desc", None)
-    dst_port = request.POST.get("dst_port", None)
-    src_port = request.POST.get("src_port", None)
-    ip = request.POST.get("ip", None)
-    networkcard = request.POST.get("networkcard", None)
-    src_ip = netifaces.ifaddresses(networkcard)[2][0]["addr"]
-    try:
-        dst_port = int(dst_port)
-        src_port = int(src_port)
-    except ValueError:
-        return JsonResponse({"msg": 0})
-    uuid_job = str(uuid.uuid1())
-    job = Job.objects.create(uuid=uuid_job, title=title, desc=desc, dst_port=dst_port, src_port=src_port, subnets=ip, network_card=networkcard, status=0, progress_rate=0, start_time=datetime.now())
-    job.save()
-    data = []
-    data.append(job.uuid)
-    data.append(job.title)
-    data.append(job.dst_port)
-    data.append(job.src_port)
-    data.append(job.subnets)
-    data.append(job.network_card)
-    data.append(src_ip)
-    data.append(job.start_time.strftime('%Y/%m/%d/%H:%M:%S'))
-    data.append(job.status)
-    data.append(job.progress_rate)
-    return JsonResponse({"msg": 1, "data": data})
+def create_scan_task(request):
+    from .models import Scanner
+    import timezone_field
+    datas = {}
+    # 获取扫描器列表
+    scanners = list(Scanner.objects.all())
+    # if scanners == []:
+    #     return render(request, "dashboard/html/create_scan_task_error.html", context={"msg": "没有可用的扫描器，请先创建。"})
+    datas["scanners"] = scanners
+    # 获取timezone
+    timezone = timezone_field.TimeZoneField()
+    timezones = []
+    for tz in timezone.flatchoices:
+        timezones.append(str(tz[0]))
+    datas["timezones"] = timezones
+    return render(request, "dashboard/html/create_scan_task.html", context=datas)
 
 
 def logout(request):

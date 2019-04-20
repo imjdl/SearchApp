@@ -1,10 +1,10 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% block title %}
-添加扫描节点
+Scanner Edit
 {% endblock %}
 {% block scripts_head %}
-    <script>var create_scanner_url = "{% url "dashboard:create_scanner" %}";</script>
+    <script> var scanner_update_url = "{% url "dashboard:scanner_update" %}";</script>
     <script src={% static "dashboard/js/script.js" %}></script>
 {% endblock %}
 {% block page-wrapper %}
@@ -13,13 +13,13 @@
         <!-- Page Heading -->
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Add Scanner Node</h1>
+                <h1 class="page-header">Scanner Edit</h1>
                 <ol class="breadcrumb">
                     <li>
                         <i class="fa fa-dashboard"></i>  <a href="{% url 'dashboard:index' %}">Dashboard</a>
                     </li>
                     <li class="active">
-                        <i class="fa fa-edit"></i> Add Scanner Node
+                        <i class="fa fa-edit"></i> Scanner Edit
                     </li>
                 </ol>
             </div>
@@ -32,13 +32,21 @@
                 <form role="form" name="form-scanner-base" id="form-scanner-base">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label>Scanner Host Input</label>
-                        <input class="form-control" placeholder="Example: 192.168.1.1" name="scanner-host">
+                        <label>Scanner Host</label>
+                        <input class="form-control" value="{{ ip }}" name="scanner-host">
+                        <input class="form-control" type="hidden" value="{{ id }}" name="scanner-id">
                     </div>
-
                     <div class="form-group">
-                        <label>Scanner Port Input</label>
-                        <input class="form-control" placeholder="Example: 8080" name="scanner-port">
+                        <label>Scanner Port</label>
+                        <input class="form-control" value="{{ port }}" name="scanner-port">
+                    </div>
+                    <div class="form-group">
+                        <label>Scanner Token</label>
+                        <input class="form-control" disabled value="{{ token }}" name="scanner-token">
+                    </div>
+                    <div class="form-group">
+                        <label>Scanner Status</label>
+                        <input class="form-control" disabled value="{{ status }}" name="scanner-status">
                     </div>
                 </form>
             </div>
@@ -48,19 +56,19 @@
                 <form role="form" name="form-es" id="form-es">
                     <div class="form-group">
                         <label class="control-label" for="es-host">es server hosts</label>
-                        <input type="text" class="form-control" name="es-hosts" placeholder="Example: 192.168.1.1,192.168.1.2">
+                        <input type="text" class="form-control" name="es-hosts" value="{{ eshosts }}">
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="es-port">es server port</label>
-                        <input type="text" class="form-control" name="es-port" placeholder="9200">
+                        <input type="text" class="form-control" name="es-port" value="{{ esport }}">
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="es-user">es user</label>
-                        <input type="text" class="form-control" name="es-user" placeholder="username">
+                        <input type="text" class="form-control" name="es-user" value="{{ esuser }}">
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="es-pass">es password</label>
-                        <input type="password" class="form-control" name="es-pass" placeholder="password">
+                        <input type="password" class="form-control" name="es-pass" value="{{ espasswd }}">
                     </div>
                 </form>
             </div>
@@ -70,26 +78,26 @@
                 <form role="form" name="form-borker" id="form-borker">
                     <div class="form-group">
                         <label class="control-label" for="borker-host">borker server host</label>
-                        <input type="text" class="form-control" name="borker-host" placeholder="Example: 192.168.1.1">
+                        <input type="text" class="form-control" name="borker-host" value="{{ borkerhost }}">
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="borker-port">borker server port</label>
-                        <input type="text" class="form-control" name="borker-port" placeholder="6379">
+                        <input type="text" class="form-control" name="borker-port" value="{{ borkerport }}">
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="borker-user">borker user</label>
-                        <input type="text" class="form-control" name="borker-user" placeholder="username">
+                        <input type="text" class="form-control" name="borker-user" value="{{ borkeruser }}">
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="borker-pass">borker password</label>
-                        <input type="password" class="form-control" name="borker-pass" placeholder="password">
+                        <input type="password" class="form-control" name="borker-pass" value="{{ borkerpass }}">
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="borker-db">borker db</label>
-                        <input type="text" class="form-control" name="borker-db" placeholder="0">
+                        <input type="text" class="form-control" name="borker-db" value="{{ borkerdb }}">
                     </div>
                     <div class="form-group">
-                        <label>selects borker server type</label>
+                        <label>selects borker server type: {{ borkertype }}</label>
                         <select class="form-control" id="borker-type">
                             <option>redis</option>
                             <option>amqp</option>
@@ -103,26 +111,26 @@
                 <form role="form" name="form-backend" id="form-backend">
                     <div class="form-group">
                         <label class="control-label" for="backend-host">backend server host</label>
-                        <input type="text" class="form-control" name="backend-host" placeholder="Example: 192.168.1.1">
+                        <input type="text" class="form-control" name="backend-host" value="{{ backendhost }}">
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="backend-port">backend server port</label>
-                        <input type="text" class="form-control" name="backend-port" placeholder="6379">
+                        <input type="text" class="form-control" name="backend-port" value="{{ backendport }}">
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="backend-user">backend user</label>
-                        <input type="text" class="form-control" name="backend-user" placeholder="username">
+                        <input type="text" class="form-control" name="backend-user" value="{{ backenduser }}">
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="backend-pass">backend password</label>
-                        <input type="password" class="form-control" name="backend-pass" placeholder="password">
+                        <input type="password" class="form-control" name="backend-pass" value="{{ backendpasswd }}">
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="backend-db">backend db</label>
-                        <input type="text" class="form-control" name="backend-db" placeholder="0">
+                        <input type="text" class="form-control" name="backend-db" value="{{ backenddb }}">
                     </div>
                     <div class="form-group">
-                        <label>selects borker server type</label>
+                        <label>selects borker server type: {{ backendtype }}</label>
                         <select class="form-control" id="backend-type">
                             <option>redis</option>
                             <option>amqp</option>
@@ -133,13 +141,12 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <button type="submit" class="btn btn-danger" onclick="create_scanner()">ADD SCAN NODE</button>
+                <button type="submit" class="btn btn-danger" onclick="update_scanner()">SAVE</button>
                 <span id="flag-error" class="text-danger"></span>
                 <span id="flag-success" class="text-info"></span>
             </div>
         </div>
         <!-- /.row -->
     </div>
-    <!-- /.container-fluid -->
 </div>
 {% endblock %}

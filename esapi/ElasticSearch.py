@@ -126,7 +126,7 @@ class ElastciSearch(object):
                 data = {
                     "query": {
                         "term": {
-                            "ip": value
+                            "HOST": value
                         }
                     },
                     "from": (page - 1) * 10,
@@ -221,7 +221,7 @@ class ElastciSearch(object):
         data = {
              "query": {
                 "term": {
-                    "ip": {
+                    "HOST": {
                         "value": value
                     }
                 }

@@ -1,3 +1,13 @@
+function addEvent(el, type, fn) {
+　　if(el.addEventListener){
+　　el.addEventListener(type,fn,false)
+　　}else if(el.attachEvent()){
+　　el.attachEvent('on' + type,fn,false)
+　　}else{
+　　return false
+}
+}
+
 function getData() {
     var xmlhttp = Getxmlhttp();
     xmlhttp.open("GET", scanner_list_api,true);
@@ -12,12 +22,77 @@ function getData() {
     }
 }
 
+function close_scanner(id) {
+    var xmlhttp = Getxmlhttp();
+    xmlhttp.open("GET", scanner_oper + "?id=" + id + "&type=stop",true);
+    xmlhttp.send();
+    xmlhttp.onreadystatechange = function () {
+        if(xmlhttp.readyState == 4){
+            if(xmlhttp.status == 200){
+                window.location.reload();
+            }
+        }
+    }
+}
+
+function start_scanner(id) {
+    var xmlhttp = Getxmlhttp();
+    xmlhttp.open("GET", scanner_oper + "?id=" + id + "&type=start",true);
+    xmlhttp.send();
+    xmlhttp.onreadystatechange = function () {
+        if(xmlhttp.readyState == 4){
+            if(xmlhttp.status == 200){
+                window.location.reload();
+            }
+        }
+    }
+}
+
+function restart_scanner(id) {
+    var xmlhttp = Getxmlhttp();
+    xmlhttp.open("GET", scanner_oper + "?id=" + id + "&type=restart",true);
+    xmlhttp.send();
+    xmlhttp.onreadystatechange = function () {
+        if(xmlhttp.readyState == 4){
+            if(xmlhttp.status == 200){
+               window.location.reload();
+            }
+        }
+    }
+}
+
+function flush_scanner(id) {
+    var xmlhttp = Getxmlhttp();
+    xmlhttp.open("GET", scanner_oper + "?id=" + id + "&type=flush",true);
+    xmlhttp.send();
+    xmlhttp.onreadystatechange = function () {
+        if(xmlhttp.readyState == 4){
+            if(xmlhttp.status == 200){
+                window.location.reload();
+            }
+        }
+    }
+}
+
+function delete_scanner(id) {
+    var xmlhttp = Getxmlhttp();
+    xmlhttp.open("GET", scanner_oper + "?id=" + id + "&type=delete",true);
+    xmlhttp.send();
+    xmlhttp.onreadystatechange = function () {
+        if(xmlhttp.readyState == 4){
+            if(xmlhttp.status == 200){
+                window.location.reload();
+            }
+        }
+    }
+}
+
 function createNode(datas){
     var out_div = getId("scanner-list");
     var all_div = document.createElement("div");
-    console.log(datas.length);
     for(var i=0; i< datas.length; i++){
         var i_logo = document.createElement("i");
+        console.log(datas[i].status);
         if(datas[i].status == 0) {
             all_div.className = "panel panel-primary";
             i_logo.className = "fa fa-close fa-5x";
@@ -56,18 +131,43 @@ function createNode(datas){
         var btn_restart = document.createElement("button");
         var btn_start = document.createElement("button");
         var btn_flush = document.createElement("button");
+        var btn_delete = document.createElement("button");
         btn_close.className = "btn btn-info btn-outline-info";
         btn_close.innerText = "关闭";
+        btn_close.value = datas[i].id;
         btn_restart.className = "btn btn-warning btn-outline-info";
         btn_restart.innerText = "重启";
+        btn_restart.value = datas[i].id;
         btn_start.className = "btn btn-default btn-outline-info";
         btn_start.innerText = "开启";
+        btn_start.value = datas[i].id;
         btn_flush.className = "btn btn-default btn-outline-dark";
         btn_flush.innerText = "刷新";
+        btn_flush.value = datas[i].id;
+        btn_delete.className = "btn btn-default btn-outline-dark";
+        btn_delete.innerText = "删除";
+        btn_delete.value = datas[i].id;
+        // 添加事件
+        addEvent(btn_close, "click", function () {
+            close_scanner(this.value);
+        });
+        addEvent(btn_restart, "click", function () {
+            restart_scanner(this.value);
+        });
+        addEvent(btn_start, "click", function () {
+            start_scanner(this.value);
+        });
+        addEvent(btn_flush, "click", function () {
+            flush_scanner(this.value);
+        });
+        addEvent(btn_delete, "click", function () {
+            delete_scanner(this.value);
+        });
         div_oper.appendChild(btn_close);
         div_oper.appendChild(btn_restart);
         div_oper.appendChild(btn_start);
         div_oper.appendChild(btn_flush);
+        div_oper.appendChild(btn_delete);
         col_xs_10_text_right.appendChild(div_info);
         col_xs_10_text_right.appendChild(div_oper);
         row_div.appendChild(col_xs_2);
@@ -75,6 +175,7 @@ function createNode(datas){
         head_div.appendChild(row_div);
         all_div.appendChild(head_div);
         var a = document.createElement("a");
+        a.href = "/admin/scanner/" + datas[i].id;
         var div_footer = document.createElement("div");
         div_footer.className = "panel-footer";
         var span_left = document.createElement("span");

@@ -16,6 +16,7 @@ def index(request):
 def results(request):
     '''
     展示搜索的结果
+    统计搜索
     :param request:
     :return:
     '''
@@ -46,7 +47,10 @@ def results(request):
         for i in res["hits"]:
             data = {}
             data["HOST"] = i["_source"]["HOST"]
-            data["PROTOCOL"] = i["_source"]["PROTOCOL"]
+            try:
+                data["PROTOCOL"] = i["_source"]["PROTOCOL"].split(":")[1]
+            except Exception as e:
+                data["PROTOCOL"] = i["_source"]["PROTOCOL"]
             data["TITLE"] = i["_source"]["TITLE"]
             data["PORT"] = str(i["_source"]["PORT"])
             data["DATE"] = i["_source"]["DATE"]
@@ -57,6 +61,7 @@ def results(request):
             data["EXTRAINFO"] = i["_source"]["EXTRAINFO"]
             data["BANNER"] = i["_source"]["BANNER"]
             data["STATE_CODE"] = i["_source"]["STATE_CODE"]
+            print(i["_source"]["HEADERS"])
             data["HEADERS"] = i["_source"]["HEADERS"]
             data["CONTENT"] = i["_source"]["CONTENT"]
             # data["LOCATION"] = i["_source"]["date"]
@@ -92,41 +97,70 @@ def results(request):
                                'articles_page': None, 'pages': None, "keys": keys, "colors": colors})
 
 
-def result(request, ip):
+def result(request, IP):
     '''
     展示一个具体的结果
     :param request:
+    {
+        "IP":"",
+        "LN":"",
+        "LE":"",
+        "OS":"",
+        "TIME_ZONE":"",
+        "CONTINENT":"",
+        "COUNTRY":"",
+        "PROVINCE":"",
+        "CITY":"",
+        "PORTS":[]
+        "INFO":[
+            {
+                "PORT":"",
+                "PROTOCOL": [],
+                "SERVER": "",
+                "SERVER_VERSION": "",
+                "BANNER":"",
+                "HEADERS":"",
+                "CONTENT":"",
+                "EXTRAINFO":"",
+            },
+        ]
+    }
     :return:
     '''
-    from core.PortMappingServer import pms
-    res = es.getipmsg(ip)
-    if res:
-        ports = []
-        datas = []
-        for i in res["hits"]:
-            data = {}
-            data["ip"] = i["_source"]["ip"]
-            data["state_code"] = i["_source"]["state_code"]
-            # data["header"] = i["_source"]["header"]
-            data["body"] = i["_source"]["body"].strip()
-            data["title"] = i["_source"]["title"]
-            data["server"] = i["_source"]["server"]
-            data["x-powered-by"] = i["_source"]["x-powered-by"]
-            data["web_type"] = i["_source"]["web_type"]
-            data["port"] = i["_source"]["port"]
-            ports.append(int(data["port"]))
-            data["date"] = i["_source"]["date"]
-            datas.append(data)
-        pts = pms()
-        portoser = []
-        for p in ports:
-            portoser.append((p, pts.getserver(p)))
-        # print(portoser)
-        # print(datas)
-        return render(request, 'search/html/data.html', context={"ports": portoser, "ip": ip, "datas":datas})
+    res = es.getipmsg(IP)
+    total = res["total"]
+    if total != 0:
+        data = {}
+        data["IP"] = res["hits"][0]["_source"]["HOST"]
+        data["LN"] = res["hits"][0]["_source"]["LOCATION"]["LATITUDE"]
+        data["LE"] = res["hits"][0]["_source"]["LOCATION"]["LOGITUDE"]
+        if  res["hits"][0]["_source"]["EXTRAINFO"]:
+            data["OS"] = res["hits"][0]["_source"]["EXTRAINFO"] + "," + res["hits"][0]["_source"]["OS"]
+        else:
+            data["OS"] = res["hits"][0]["_source"]["OS"]
+
+        data["TIME_ZONE"] = res["hits"][0]["_source"]["TIME_ZONE"]
+        data["CONTINENT"] = res["hits"][0]["_source"]["CONTINENT"]
+        data["COUNTRY"] = res["hits"][0]["_source"]["COUNTRY"]
+        data["PROVINCE"] = res["hits"][0]["_source"]["PROVINCE"]
+        data["CITY"] = res["hits"][0]["_source"]["CITY"]
+        data["PORTS"] = []
+        data["INFO"] = []
+        for ip in res["hits"]:
+            port_info = {}
+            port_info["PORT"] = ip["_source"]["PORT"]
+            port_info["PROTOCOL"] = ip["_source"]["PROTOCOL"].split(":")
+            port_info["SERVER"] = ip["_source"]["SERVER"]
+            port_info["SERVER_VERSION"] = ip["_source"]["SERVER_VERSION"]
+            port_info["BANNER"] = ip["_source"]["BANNER"]
+            port_info["HEADERS"] = ip["_source"]["HEADERS"]
+            port_info["CONTENT"] = ip["_source"]["CONTENT"]
+            data["INFO"].append(port_info)
+            data["PORTS"].append(ip["_source"]["PORT"])
+        print(data)
+        return render(request, 'search/html/data.html', context=data)
     else:
-        # 处理不存在的数据
-        return render(request, 'search/html/data.html', context={"ports": None, "ip": ip, "datas": None})
+        return render(request, "search/html/data.html", context={})
 
 
 def getpages(val, nowpage):

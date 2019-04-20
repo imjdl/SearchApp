@@ -1,7 +1,8 @@
 from django.db import models
 
 # Create your models here.
-
+import requests
+import json
 
 class Scanner(models.Model):
 
@@ -51,6 +52,77 @@ class Scanner(models.Model):
 
     def __str__(self):
         return self.scanner_ip + ":::" + str(self.scanner_port)
+
+    # (0, "shutdown"),
+    # (1, "runing"),
+    # (2, "unable to connect")
+    def start(self):
+        # start celery server
+        data = {}
+        if self.scanner_status == 1:
+            data["info"] = "scanner is running"
+        elif self.scanner_status == 2:
+            data["info"] = "scanner unable to connect"
+        else:
+            url = "http://" + self.scanner_ip + ":" + str(self.scanner_port) + "/celery-start/?token=" \
+                  + self.scanner_token
+            try:
+                req = requests.get(url=url, timeout=(10, 15))
+                data["info"] = json.loads(req.text)["info"]
+                self.scanner_status = 1
+            except Exception as e:
+                self.scanner_status = 2
+                data["info"] = "scanner unable to connect"
+        return data
+
+    def restart(self):
+        data = {}
+        if self.scanner_status == 2:
+            data["info"] = "scanner unable to connect"
+        else:
+            url = "http://" + self.scanner_ip + ":" + str(self.scanner_port) + "/celery-restart/?token=" \
+                  + self.scanner_token
+            try:
+                req = requests.get(url=url, timeout=(10, 15))
+                data["info"] = json.loads(req.text)["info"]
+            except Exception as e:
+                self.scanner_status = 2
+                data["info"] = "scanner unable to connect"
+        return data
+
+    def stop(self):
+        data = {}
+        if self.scanner_status == 3:
+            data["info"] = "scanner is stop"
+        elif self.scanner_status == 2:
+            data["info"] = "scanner unable to connect"
+        else:
+            url = "http://" + self.scanner_ip + ":" + str(self.scanner_port) + "/celery-stop/?token=" \
+                  + self.scanner_token
+            try:
+                req = requests.get(url=url, timeout=(10, 15))
+                data["info"] = json.loads(req.text)["info"]
+                self.scanner_status = 0
+            except Exception as e:
+                self.scanner_status = 2
+                data["info"] = "scanner unable to connect"
+        return data
+
+    def get_state(self):
+        data = {}
+        url = "http://" + self.scanner_ip + ":" + str(self.scanner_port) + "/celery-status/?token=" \
+              + self.scanner_token
+        try:
+            req = requests.get(url=url, timeout=(10, 15))
+            data["info"] = json.loads(req.text)["info"]
+            if data["info"] == "Celery already runing":
+                self.scanner_status = 1
+            if data["info"] == "Celery has stopped":
+                self.scanner_status = 0
+        except Exception as e:
+            self.scanner_status = 2
+            data["info"] = "scanner unable to connect"
+        return data
 
 
 class Job(models.Model):

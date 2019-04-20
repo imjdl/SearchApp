@@ -35,36 +35,40 @@
         </div>
         <br>
         <br>
-        <div class="col-md-12">
+        <div class="col-md-12" style="color: #28FEFC">
             <p>搜索"{{ msg }}" 共搜索到了<span class="text-danger">{{ total }} </span>条结果。耗时：{{ time | floatformat:"3"}} 毫秒</p>
         </div>
     </div>
-    <hr style="border-color: white">
     <!--数据部分-->
     <div class="container">
         <!--一个数据-->
         {% for i in datas %}
         <div class="container row">
+            <div class="container col-12 ip-border row">
+                <div class="container col-3">
+                    {% if i.URI == "" %}
+                        <a style="font-size: 20px;color: #28FEFC;">{{ i.HOST }}</a>
+                    {% else %}
+                        <a style="font-size: 20px;color: #28FEFC;" target="_blank" href="{{ i.URI }}">{{ i.HOST }}</a>
+                    {% endif %}
+                </div>
+                <div class="container col-3"></div>
+                <div class="container col-3"></div>
+                <div class="container col-3">
+                    <button class="btn btn-danger">{{ i.PORT }}</button>
+                    <button class="btn btn-danger">{{ i.PROTOCOL }}</button>
+                </div>
+            </div>
+            <div class="container col-12" style="height: 10px;"></div>
             <div class="container col-md-6">
-                {% if i.URI == "" %}
-                    <p>地址:&emsp;<span>{{ i.HOST }}</span></p>
-                {% else %}
-                    <p>地址:&emsp;<span><a target="_blank" href="{{ i.URI }}">{{ i.HOST }}</a></span></p>
-                {% endif %}
-                <p>端口:&emsp;<span>{{ i.PORT }}</span></p>
-                <p>协议:&emsp;<span>{{ i.PROTOCOL }}</span></p>
-                <p>服务:&emsp;<span>{{ i.SERVER }}</span></p>
-                <p>服务版本:&emsp;<span>{{ i.SERVER_VERSION }}</span></p>
-                <p>指纹:&emsp;<span>{{ i.BANNER }}</span></p>
                 <p>标题:&emsp;<span>{{ i.TITLE }}</span></p>
                 <p>时间:&emsp;<span>{{ i.DATE }}</span></p>
                 <p>国家:&emsp;<span>{{ i.COUNTRY }}</span></p>
                 <p>省份:&emsp;<span>{{ i.PROVINCE }}</span></p>
-                <p>城市:&emsp;<span>{{ i.CITY }}</span></p>
                 <a href="{% url 'search:result' i.HOST %}" target="_blank"><button class="btn btn-info">查看详情</button></a>
             </div>
             <div class="container col-md-6">
-                <pre class="code_pre">{{ i.HEADER }}{{ i.CONTENT }}</pre>
+                <pre class="code_pre">{{ i.HEADERS }}{{ i.CONTENT }}</pre>
             </div>
         </div>
         <hr>

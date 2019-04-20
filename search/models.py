@@ -15,4 +15,4 @@ class SearchLog(models.Model):
     searcher_content = models.TextField()
 
     def __str__(self):
-        return self.searcher_IP + ":::" + self.searcher_content
+        return self.searcher_IP + ":::" + self.searcher_conten

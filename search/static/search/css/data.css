@@ -7,7 +7,15 @@ body {
     height: 100%;
 }
 .code_pre{
-    color: white;
+    color: #28FEFC;
     width: 500px;
-    height: 350px;
+    height: 250px;
+    font-weight: bold;
+    overflow: auto;
+    overflow-x:hidden;
+}
+
+.ip-border{
+    border: 1px solid  #28FEFC;
+    border-radius: 10px;
 }

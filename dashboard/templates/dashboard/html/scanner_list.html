@@ -39,7 +39,8 @@
 {% endblock %}
 {% block scripts_end %}
     <script>
-        var scanner_list_api = "{% url "dashboard:scanner_list_api" %}";;
+        var scanner_list_api = "{% url "dashboard:scanner_list_api" %}";
+        var scanner_oper = "{% url "dashboard:scanner_oper" %}";
     </script>
     <script src="{% static "dashboard/js/scanner_list.js" %}"></script>
 {% endblock %}

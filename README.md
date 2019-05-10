@@ -11,3 +11,7 @@
 这个是我的毕业设计，已经做完了，
 参考价值不大，也请各位谨慎star。
 Thanks :)
+
+# 演示地址
+
+https://www.bilibili.com/video/av52012545

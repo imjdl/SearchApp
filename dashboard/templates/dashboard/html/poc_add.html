@@ -1,0 +1,95 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}
+Add Poc
+{% endblock %}
+{% block style %}
+    <link rel="stylesheet" href="{% static "dashboard/css/codemirror.css" %}">
+    <link rel="stylesheet" href="{% static "dashboard/css/bespin.css" %}">
+{% endblock %}
+{% block scripts_head %}
+    <script src="{% static "dashboard/js/codemirror.js" %}"></script>
+    <script src="{% static "dashboard/js/python.js" %}"></script>
+    <script>var poc_url = "{% url "dashboard:poc" %}";</script>
+    <script src="{% static "dashboard/js/PoC_add.js" %}"></script>
+{% endblock %}
+{% block page-wrapper %}
+{% include "dashboard/section/modal.html" %}
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Add PoC</h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i>  <a href="{% url 'dashboard:index' %}">Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-edit"></i> Add PoC
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <form role="form">
+                    <div class="form-group">
+                        <label>PoC Nmae</label>
+                        <input class="form-control" id="pocname" placeholder="PoC Name">
+                        {% csrf_token %}
+                    </div>
+                    <div class="form-group">
+                        <label>Search  Keywords</label>
+                        <input class="form-control" id="keywords" placeholder="Search  Keywords">
+                    </div>
+                    <div class="form-group">
+                        <label>PoC Description</label>
+                        <textarea class="form-control" placeholder="description" id="description" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Selects product</label>
+                        <select class="form-control" id="product">
+                            <option>-------</option>
+                            {% for product in products %}
+                                <option value="{{ product.product_id }}">{{ product }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                            <label>Selects Vulnerability type</label>
+                            <select class="form-control" id="vul">
+                                <option>-------</option>
+                                {% for vul in vuls %}
+                                    <option value="{{ vul.vul_id }}">{{ vul }}</option>
+                                {% endfor %}
+                            </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Vulnerability Date</label>
+                        <input  class="form-control" id="date" type="date">
+                    </div>
+                    <div class="form-group">
+                        <label>PoC Code</label>
+                        <textarea id="code" name="code" style="display: none;">{{ poc_tpl }}</textarea>
+                        <script>
+                            var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+                                    lineNumbers: true,     // 显示行数
+                                    indentUnit: 4,         // 缩进单位为4
+                                    styleActiveLine: true, // 当前行背景高亮
+                                    matchBrackets: true,   // 括号匹配
+                                    mode: 'python',     // python
+                                    lineWrapping: true,    // 自动换行
+                                    theme: 'bespin',      // 使用monokai模版
+                                });
+                            editor.setSize('100%', '950px');
+                        </script>　　
+                    </div>
+                    <button type="button" class="btn btn-info" onclick="create_poc()">Save</button>
+                    <button type="reset" class="btn btn-danger">Reset</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

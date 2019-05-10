@@ -18,3 +18,10 @@ function toJson(str) {
     var json = (new Function("return" + str))();
     return json;
 }
+
+function showmsg(title, body, fun) {
+    getId("myModalLabel").innerText = title;
+    getId("myModalbody").innerText = body;
+    $('#myModal').modal('toggle');
+    $('#myModal').on('hidden.bs.modal',fun)
+}

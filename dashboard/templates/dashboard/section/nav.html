@@ -134,10 +134,16 @@
                         <a href="javascript:;" data-toggle="collapse" data-target="#task"><i class="fa fa-fw fa-table"></i> Task Manager <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="task" class="collapse">
                             <li>
-                                <a href="{% url  'dashboard:create_scan_task'%}">Add Scan Task</a>
+                                <a href="{% url  'dashboard:zmap_scan_task'%}">Add Zmap Scan Task</a>
                             </li>
                             <li>
-                                <a href="#">Scan Task List</a>
+                                <a href="{% url  'dashboard:nmap_scan_task'%}">Add Nmap Scan Task</a>
+                            </li>
+                            <li>
+                                <a href="{% url  'dashboard:poc_list'%}">Add Vul Scan Task</a>
+                            </li>
+                            <li>
+                                <a href="{% url  'dashboard:scan_task_list'%}">Scan Task List</a>
                             </li>
                         </ul>
                     </li>
@@ -152,17 +158,28 @@
                             </li>
                         </ul>
                     </li>
+{#                    <li>#}
+{#                        <a href="javascript:;" data-toggle="collapse" data-target="#data"><i class="fa fa-fw fa-wrench"></i> Data Manager <i class="fa fa-fw fa-caret-down"></i></a>#}
+{#                        <ul id="data" class="collapse">#}
+{#                            <li>#}
+{#                                <a href="#">IP Data</a>#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                <a href="#">Server Data</a>#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                <a href="#">Vulnerability Data</a>#}
+{#                            </li>#}
+{#                        </ul>#}
+{#                    </li>#}
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#data"><i class="fa fa-fw fa-wrench"></i> Data Manager <i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="data" class="collapse">
+                        <a href="javascript:;" data-toggle="collapse" data-target="#terminal"><i class="fa fa-fw fa-terminal"></i> Product Manager <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="terminal" class="collapse">
                             <li>
-                                <a href="#">IP Data</a>
+                                <a href="{% url  'dashboard:product'%}">Add Product</a>
                             </li>
                             <li>
-                                <a href="#">Server Data</a>
-                            </li>
-                            <li>
-                                <a href="#">Vulnerability Data</a>
+                                <a href="{% url  'dashboard:product_list'%}">Product List</a>
                             </li>
                         </ul>
                     </li>
@@ -170,10 +187,10 @@
                         <a href="javascript:;" data-toggle="collapse" data-target="#bug"><i class="fa fa-fw fa-bug"></i> Vulnerability Manager <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="bug" class="collapse">
                             <li>
-                                <a href="#">Add Vulnerability</a>
+                                <a href="{% url  'dashboard:poc'%}">Add Vulnerability</a>
                             </li>
                             <li>
-                                <a href="#">Vulnerability List</a>
+                                <a href="{% url  'dashboard:vul_add'%}">Add Vulnerability Type</a>
                             </li>
                         </ul>
                     </li>

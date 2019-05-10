@@ -8,6 +8,7 @@ Scanner Edit
     <script src={% static "dashboard/js/script.js" %}></script>
 {% endblock %}
 {% block page-wrapper %}
+{% include "dashboard/section/modal.html" %}
 <div id="page-wrapper">
     <div class="container-fluid">
         <!-- Page Heading -->
@@ -33,6 +34,7 @@ Scanner Edit
                     {% csrf_token %}
                     <div class="form-group">
                         <label>Scanner Host</label>
+                        <span>Last update time: {{ date }}</span>
                         <input class="form-control" value="{{ ip }}" name="scanner-host">
                         <input class="form-control" type="hidden" value="{{ id }}" name="scanner-id">
                     </div>

@@ -1,0 +1,66 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}
+PoC List
+{% endblock %}
+{% block scripts_head %}
+    <script>
+        var poc_del_url = "{% url "dashboard:poc_del" %}";
+        var poc_run_url = "{% url "dashboard:poc_run" %}";
+    </script>
+    <script src="{% static "dashboard/js/PoC_add.js" %}"></script>
+{% endblock %}
+{% block page-wrapper %}
+{% include "dashboard/section/modal.html" %}
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">PoC List</h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i>  <a href="{% url 'dashboard:index' %}">Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-edit"></i> PoC List
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th> Name</th>
+                                        <th> Description</th>
+                                        <th> Date</th>
+                                        <th> Type</th>
+                                        <th> Operate</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for poc in pocs %}
+                                    <tr>
+                                        <td>{{ poc.poc_name }}</td>
+                                        <td>{{ poc.poc_desc }}</td>
+                                        <td>{{ poc.poc_date }}</td>
+                                        <td>{{ poc.poc_type }}</td>
+                                        <td>
+                                            <a target="_blank" href="{% url "dashboard:poc_edit" %}?poc_id={{ poc.poc_id }}"><button class="btn btn-info">Edit</button></a>
+                                            <button class="btn btn-success" onclick="run_poc({{ poc.poc_id }})" >Run</button>
+                                            <a target="_blank" href="{% url "dashboard:poc_detail" %}?poc_id={{ poc.poc_id }}"><button class="btn btn-warning" >Detail</button></a>
+                                            <button class="btn btn-danger" onclick="delete_poc({{ poc.poc_id }})">Delete</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

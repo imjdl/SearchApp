@@ -1,0 +1,329 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}
+添加NMAP扫描任务
+{% endblock %}
+{% block scripts_head %}
+    <script>var create_nmap_task_url = "{% url "dashboard:create_nmap_task" %}";</script>
+    <script src={% static "dashboard/js/scan_task.js" %}></script>
+{% endblock %}
+{% block page-wrapper %}
+{% include "dashboard/section/modal.html" %}
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header"> Add Scan Nmap Task</h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i>  <a href="{% url 'dashboard:index' %}">Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-edit"></i> Add Scan Nmap Task
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <!-- Scanner base config -->
+            <div class="col-lg-6">
+                <h3>Base Info</h3>
+                <form role="form" name="form-scanner-base" id="form-task-base">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="scanners">Select scanner</label>
+                        <select class="form-control" id="scanners">
+                          <option>----------------</option>
+                            {% for scanner in scanners %}
+                                <option value="{{ scanner.scanner_id }}">{{ scanner }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input class="form-control" placeholder="扫描80端口" value="" id="name">
+                    </div>
+{#                    <div class="form-group">#}
+{#                        <label for="scanners">Select Task</label>#}
+{#                        <select class="form-control" id="task_name">#}
+{#                            <option>----------------</option>#}
+{#                            <option value="0">SYN Scan</option>#}
+{#                            <option value="1">UDP Scan</option>#}
+{#                        </select>#}
+{#                    </div>#}
+                    <div class="form-group">
+                        <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="1" id="enable" checked>
+                              <label class="form-check-label" for="enable">
+                                Enable
+                              </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Description:</label>
+                        <textarea class="form-control" id="description"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-6">
+                <h3>Timing</h3>
+                <ul id="myTab" class="nav nav-tabs">
+                    <li class="active"><a href="#home" data-toggle="tab">Interval</a></li>
+                    <li><a href="#crontab" data-toggle="tab">Crontab</a></li>
+                </ul>
+                <div class="tab-content col-6">
+                    <div class="tab-pane fade in active" id="home">
+                        <form role="form" name="form-scanner-base" id="form-task-schedule">
+                            <div class="form-group">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                      <label for="every">Every</label>
+                                      <input type="text" class="form-control" id="every" placeholder="0">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                      <label for="period">Period</label>
+                                      <select id="period" class="form-control">
+                                          <option>Days</option>
+                                          <option>Hours</option>
+                                          <option>Minutes</option>
+                                          <option>Seconds</option>
+                                          <option>Microseconds</option>
+                                      </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="crontab">
+                        <form role="form" name="form-scanner-base" id="form-task-schedule">
+                            <div class="form-group">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                      <label for="minute">Minute</label>
+                                      <select id="minute" class="form-control">
+                                            <option>*</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                            <option>6</option>
+                                            <option>7</option>
+                                            <option>8</option>
+                                            <option>9</option>
+                                            <option>10</option>
+                                            <option>11</option>
+                                            <option>12</option>
+                                            <option>13</option>
+                                            <option>14</option>
+                                            <option>15</option>
+                                            <option>16</option>
+                                            <option>17</option>
+                                            <option>18</option>
+                                            <option>19</option>
+                                            <option>20</option>
+                                            <option>21</option>
+                                            <option>22</option>
+                                            <option>23</option>
+                                            <option>24</option>
+                                            <option>25</option>
+                                            <option>26</option>
+                                            <option>27</option>
+                                            <option>28</option>
+                                            <option>29</option>
+                                            <option>30</option>
+                                            <option>31</option>
+                                            <option>32</option>
+                                            <option>33</option>
+                                            <option>34</option>
+                                            <option>35</option>
+                                            <option>36</option>
+                                            <option>37</option>
+                                            <option>38</option>
+                                            <option>39</option>
+                                            <option>40</option>
+                                            <option>41</option>
+                                            <option>42</option>
+                                            <option>43</option>
+                                            <option>44</option>
+                                            <option>45</option>
+                                            <option>46</option>
+                                            <option>47</option>
+                                            <option>48</option>
+                                            <option>49</option>
+                                            <option>50</option>
+                                            <option>51</option>
+                                            <option>52</option>
+                                            <option>53</option>
+                                            <option>54</option>
+                                            <option>55</option>
+                                            <option>56</option>
+                                            <option>57</option>
+                                            <option>58</option>
+                                            <option>59</option>
+
+                                      </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                      <label for="hour">Hour</label>
+                                      <select id="hour" class="form-control">
+                                          <option>*</option>
+                                          <option>0</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                            <option>6</option>
+                                            <option>7</option>
+                                            <option>8</option>
+                                            <option>9</option>
+                                            <option>10</option>
+                                            <option>11</option>
+                                            <option>12</option>
+                                            <option>13</option>
+                                            <option>14</option>
+                                            <option>15</option>
+                                            <option>16</option>
+                                            <option>17</option>
+                                            <option>18</option>
+                                            <option>19</option>
+                                            <option>20</option>
+                                            <option>21</option>
+                                            <option>22</option>
+                                            <option>23</option>
+                                      </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                      <label for="dayofweek">Day of week</label>
+                                      <select id="dayofweek" class="form-control">
+                                              <option>*</option>
+                                              <option>0</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                            <option>6</option>
+                                      </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                      <label for="dayofmonth">Day of month</label>
+                                      <select id="dayofmonth" class="form-control">
+                                          <option>*</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                            <option>6</option>
+                                            <option>7</option>
+                                            <option>8</option>
+                                            <option>9</option>
+                                            <option>10</option>
+                                            <option>11</option>
+                                            <option>12</option>
+                                            <option>13</option>
+                                            <option>14</option>
+                                            <option>15</option>
+                                            <option>16</option>
+                                            <option>17</option>
+                                            <option>18</option>
+                                            <option>19</option>
+                                            <option>20</option>
+                                            <option>21</option>
+                                            <option>22</option>
+                                            <option>23</option>
+                                            <option>24</option>
+                                            <option>25</option>
+                                            <option>26</option>
+                                            <option>27</option>
+                                            <option>28</option>
+                                            <option>29</option>
+                                            <option>30</option>
+                                            <option>31</option>
+                                      </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                      <label for="monthofyear">Month of year</label>
+                                      <select id="monthofyear" class="form-control">
+                                          <option>*</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                            <option>6</option>
+                                            <option>7</option>
+                                            <option>8</option>
+                                            <option>9</option>
+                                            <option>10</option>
+                                            <option>11</option>
+                                            <option>12</option>
+                                      </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                      <label for="timezone">Timezone</label>
+                                      <select id="timezone" class="form-control">
+                                          <option value="Asia/Shanghai">Asia/Shanghai</option>
+                                          {% for timezone in timezones %}
+                                              <option value="{{ timezone }}">{{ timezone }}</option>
+                                          {% endfor %}
+                                      </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                    <form role="form" name="form-scanner-base" id="form-task-schedule">
+                        <div class="form-group">
+                            <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="1" id="one_of_task" checked>
+                                  <label class="form-check-label" for="one_of_task">
+                                    one of task
+                                  </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label" for="type">
+                                    Type:
+                                  </label>
+                                <select class="form-control" name="" id="type">
+                                    <option value="0">PORT</option>
+                                    <option value="1">CIDR</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Data:</label>
+                                <textarea class="form-control" id="datas"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="submit" class="btn btn-danger" onclick="create_nmap_task()">ADD SCAN TASK</button>
+                <span id="flag-error" class="text-danger"></span>
+                <span id="flag-success" class="text-info"></span>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</div>
+{% endblock %}

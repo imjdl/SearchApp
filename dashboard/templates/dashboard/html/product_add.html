@@ -1,0 +1,51 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}
+Add Product
+{% endblock %}
+{% block scripts_head %}
+    <script> var add_product_url = "{% url "dashboard:product_add" %}";</script>
+    <script src="{% static "dashboard/js/product.js" %}"></script>
+{% endblock %}
+{% block page-wrapper %}
+{% include "dashboard/section/modal.html" %}
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Add Product</h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i>  <a href="{% url 'dashboard:index' %}">Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-edit"></i> Add Product
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <form role="form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Product Nmae</label>
+                        <input class="form-control" id="productname" placeholder="Product Name">
+                    </div>
+                    <div class="form-group">
+                        <label>Official website</label>
+                        <input class="form-control" id="url" type="url" placeholder="Official website">
+                    </div>
+                    <div class="form-group">
+                        <label>Product Description</label>
+                        <textarea class="form-control" placeholder="description" id="description" rows="6"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-info" onclick="create_product()">Save</button>
+                    <button type="reset" class="btn btn-danger">Reset</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

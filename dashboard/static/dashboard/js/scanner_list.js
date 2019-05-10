@@ -89,18 +89,18 @@ function delete_scanner(id) {
 
 function createNode(datas){
     var out_div = getId("scanner-list");
-    var all_div = document.createElement("div");
     for(var i=0; i< datas.length; i++){
+        var all_div = document.createElement("div");
         var i_logo = document.createElement("i");
-        console.log(datas[i].status);
+        all_div.className = "col-lg-4 col-md-6 ";
         if(datas[i].status == 0) {
-            all_div.className = "panel panel-primary";
+            all_div.className += "panel panel-primary";
             i_logo.className = "fa fa-close fa-5x";
         }else if (datas[i].status == 1){
-            all_div.className = "panel panel-green";
+            all_div.className += "panel panel-green";
             i_logo.className = "fa fa-smile-o fa-5x";
         }else if (datas[i].status == 2) {
-            all_div.className = "panel panel-red";
+            all_div.className += "panel panel-red";
             i_logo.className = "fa fa-chain-broken fa-5x";
         }
         var head_div = document.createElement("div");
@@ -180,6 +180,7 @@ function createNode(datas){
         div_footer.className = "panel-footer";
         var span_left = document.createElement("span");
         span_left.className = "pull-left";
+        span_left.innerText = "View Details";
         var span_right = document.createElement("span");
         span_right.className = "pull-right";
         var i_circle_right = document.createElement("i");
@@ -192,8 +193,8 @@ function createNode(datas){
         div_footer.appendChild(div_clearfix);
         a.appendChild(div_footer);
         all_div.appendChild(a);
+        out_div.appendChild(all_div);
     }
-    out_div.appendChild(all_div);
 }
 
 window.onload = function () {

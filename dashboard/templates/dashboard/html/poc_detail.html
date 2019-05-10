@@ -1,0 +1,107 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}
+Poc Detail
+{% endblock %}
+{% block style %}
+    <link rel="stylesheet" href="{% static "dashboard/css/codemirror.css" %}">
+    <link rel="stylesheet" href="{% static "dashboard/css/bespin.css" %}">
+{% endblock %}
+{% block scripts_head %}
+    <script src="{% static "dashboard/js/codemirror.js" %}"></script>
+    <script src="{% static "dashboard/js/python.js" %}"></script>
+    <script>var poc_edit_url = "{% url "dashboard:poc_edit" %}";</script>
+    <script src="{% static "dashboard/js/PoC_add.js" %}"></script>
+{% endblock %}
+{% block page-wrapper %}
+{% include "dashboard/section/modal.html" %}
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">PoC Detail</h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i>  <a href="{% url 'dashboard:index' %}">Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-edit"></i> PoC Detail
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            {% if poc == "" %}
+                    <div class="col-lg-12" align="center">
+                        <h1 class="text-danger text-center">Oops!!!</h1>
+                        <h2 class="text-danger text-center">PoC error</h2>
+                    </div>
+                {% else %}
+                    <ul id="myTab" class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#home" data-toggle="tab">
+                                 PoC Detail
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#hits" data-toggle="tab">
+                                Hits Detail
+                            </a>
+                        </li>
+                    </ul>
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade in active" id="home">
+                            <label>PoC Nmae:</label><textarea class="form-control" readonly="readonly">{{ poc.poc_name }}</textarea>
+                            <label for="">Search  Keywords:</label> <textarea class="form-control" readonly="readonly">{{ poc.poc_key }}</textarea>
+                            <label for="">Description:</label> <textarea class="form-control" readonly="readonly">{{ poc.poc_desc }}</textarea>
+                            <label for="">Product:</label><textarea class="form-control" readonly="readonly">{{  poc.poc_product }}</textarea>
+                            <label for="">Vulnerability type:</label><textarea class="form-control" readonly="readonly">{{  poc.poc_type }}</textarea>
+                            <label for="">Vulnerability Date:</label><textarea class="form-control" readonly="readonly">{{  poc.poc_date }}</textarea>
+                            Code:
+                            <textarea id="code" name="code" style="display: none;" readonly="readonly"></textarea>
+                            <script>
+                                var code = window.decodeURIComponent(window.atob("{{ poc.poc_code }}"));
+                                document.getElementById("code").innerHTML = code;
+                            </script>
+                            <script>
+                                var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+                                        lineNumbers: true,     // 显示行数
+                                        indentUnit: 4,         // 缩进单位为4
+                                        styleActiveLine: true, // 当前行背景高亮
+                                        matchBrackets: true,   // 括号匹配
+                                        mode: 'python',     // python
+                                        lineWrapping: true,    // 自动换行
+                                        theme: 'bespin',      // 使用monokai模版
+                                   autoCloseBrackets: true,
+                                    });
+                                editor.setSize('100%', '950px');
+                            </script>
+                    </div>
+                        <div class="tab-pane fade" id="hits">
+                            {% include "dashboard/section/vul_location.html" %}
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>IP</th>
+                                        <th>PORT</th>
+                                        <th>DATE</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for hit in hits %}
+                                        <tr>
+                                            <td>{{ hit.IP }}</td>
+                                            <td>{{ hit.PORT }}</td>
+                                            <td>{{ hit.date }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

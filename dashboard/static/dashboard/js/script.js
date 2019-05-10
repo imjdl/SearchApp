@@ -26,6 +26,7 @@ function makedata(array) {
     for(var i=0; i<array.length; i++){
         if (array[i][1] == "" && !element.includes(array[i][0])){
             mesage(array[i][0] + " can not be empty!!!", 0);
+            showmsg("参数错误",array[i][0] + " can not be empty!!!", null);
             throw "stop execute"
         }
         if (i == array.length -1){
@@ -68,15 +69,15 @@ function create_scanner() {
         if (xmlhttp.readyState==4){
             var res = toJson(xmlhttp.responseText);
             if (xmlhttp.status==200){
-                 mesage(res["info"], 1);
-                 window.location.reload();
+                 showmsg("节点创建成功", "节点为：" + res["info"], function () {
+                     window.location.reload();
+                 });
             }else {
-                 mesage(res["info"], 0);
+                showmsg("节点创建失败", res["info"], null);
             }
         }
     };
 }
-
 
 function mesage(str, flag) {
     getId("flag-success").innerText = "";
@@ -119,10 +120,11 @@ function update_scanner() {
         if (xmlhttp.readyState==4){
             var res = toJson(xmlhttp.responseText);
             if (xmlhttp.status==200){
-                 mesage(res["info"], 1);
-                 window.location.reload();
+                 showmsg("节点更新成功", res["info"], function () {
+                     window.location.reload();
+                 });
             }else {
-                 mesage(res["info"], 0);
+                showmsg("节点更新失败", res["info"], null);
             }
         }
     };

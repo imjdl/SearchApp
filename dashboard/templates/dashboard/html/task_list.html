@@ -1,0 +1,79 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}
+任务列表
+{% endblock %}
+{% block style %}
+    <style>
+        .panel {
+            border: 0;
+        }
+    </style>
+{% endblock %}
+{% block page-wrapper %}
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Task List</h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i>  <a href="{% url 'dashboard:index' %}">Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-edit"></i> Task List
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="alert alert-info alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <i class="fa fa-info-circle"></i>  <strong>Note!!</strong> 红色代表连接失败，蓝色代表已关闭，绿色代表正在运行
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+{#        <div class="row" id="scanner-list"></div>#}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Scanner</th>
+                        <th>Name</th>
+                        <th>Enable</th>
+                        <th>Start Time</th>
+                        <th>One Off</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in node_task  %}
+                            {% for info in task.info %}
+                                <tr>
+                                    <td>{{ task.scanner }}</td>
+                                    <td>{{ info.name }}</td>
+                                    <td>{{ info.enable }}</td>
+                                    <td>{{ info.start_time }}</td>
+                                    <td>{{ info.one_off }}</td>
+                                    <td><a target="_blank" href="{% url  'dashboard:get_task_detail'%}?task_id={{ info.id }}&scanner_id={{ task.scanner_id }}"><button class="btn btn-success">Details</button></a></td>
+                                </tr>
+                            {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- /.row -->
+    </div>
+</div>
+{% endblock %}
+{#{% block scripts_end %}#}
+{#    <script>#}
+{#        var scanner_list_api = "{% url "dashboard:scanner_list_api" %}";#}
+{#        var scanner_oper = "{% url "dashboard:scanner_oper" %}";#}
+{#    </script>#}
+{#    <script src="{% static "dashboard/js/scanner_list.js" %}"></script>#}
+{#{% endblock %}#}

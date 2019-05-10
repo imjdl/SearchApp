@@ -1,0 +1,58 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}
+Product List
+{% endblock %}
+{% block scripts_head %}
+    <script> var add_product_url = "{% url "dashboard:product_add" %}";</script>
+    <script src="{% static "dashboard/js/product.js" %}"></script>
+{% endblock %}
+{% block page-wrapper %}
+{% include "dashboard/section/modal.html" %}
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Product List</h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i>  <a href="{% url 'dashboard:index' %}">Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-edit"></i> Product List
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th> Name</th>
+                                        <th> Website</th>
+                                        <th> Date</th>
+                                        <th> Desc</th>
+                                        <th> Operate</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for product in products %}
+                                    <tr>
+                                        <td>{{ product.procudt_name }}</td>
+                                        <td>{{ product.procudt_url }}</td>
+                                        <td>{{ product.product_date }}</td>
+                                        <td>{{ product.product_desc }}</td>
+                                        <td><a target="_blank" href="{% url "dashboard:product_edit" %}?product_id={{ product.product_id }}"><button class="btn btn-danger">Edit</button></a></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

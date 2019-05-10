@@ -1,0 +1,58 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}
+Edit Product
+{% endblock %}
+{% block scripts_head %}
+    <script> var product_update_url = "{% url "dashboard:product_update" %}";</script>
+    <script src="{% static "dashboard/js/product.js" %}"></script>
+{% endblock %}
+{% block page-wrapper %}
+{% include "dashboard/section/modal.html" %}
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Edit Product</h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i>  <a href="{% url 'dashboard:index' %}">Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-edit"></i> Edit Product
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                {% if products == "" %}
+                    <div class="col-lg-12" align="center">
+                        <h1 class="text-danger text-center">Oops!!!</h1>
+                        <h2 class="text-danger text-center">Product error</h2>
+                    </div>
+                {% else %}
+                    <form role="form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Product Nmae</label>
+                        <input class="form-control" id="productname" placeholder="Product Name" value="{{ products.procudt_name }}">
+                        <input type="hidden" id="proudct_id" value="{{products.product_id }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Official website</label>
+                        <input class="form-control" id="url" type="url" placeholder="Official website" value="{{ products.procudt_url  }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Product Description</label>
+                        <textarea class="form-control" placeholder="description" id="description" rows="6">{{ products.product_desc }}</textarea>
+                    </div>
+                    <button type="button" class="btn btn-info" onclick="update_product()">Update</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

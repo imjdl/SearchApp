@@ -3,6 +3,13 @@
 {% block title %}
 节点列表
 {% endblock %}
+{% block style %}
+    <style>
+        .panel {
+            border: 0;
+        }
+    </style>
+{% endblock %}
 {% block page-wrapper %}
 <div id="page-wrapper">
     <div class="container-fluid">
@@ -30,9 +37,9 @@
             </div>
         </div>
         <!-- /.row -->
-        <div class="row">
-            <div class="col-lg-4 col-md-6" id="scanner-list"></div>
-        </div>
+{#        <div class="container row" id="scanner-list">#}
+{#        </div>#}
+        <div class="row" id="scanner-list"></div>
         <!-- /.row -->
     </div>
 </div>

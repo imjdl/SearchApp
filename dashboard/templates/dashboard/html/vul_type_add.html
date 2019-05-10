@@ -1,0 +1,42 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}
+Add Vulnerability type
+{% endblock %}
+{% block scripts_head %}
+    <script> var vul_add_url = "{% url "dashboard:vul_add" %}";</script>
+    <script src="{% static "dashboard/js/vul_type.js" %}"></script>
+{% endblock %}
+{% block page-wrapper %}
+{% include "dashboard/section/modal.html" %}
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Add Vulnerability type</h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i>  <a href="{% url 'dashboard:index' %}">Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-edit"></i> Add Vulnerability type
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <form role="form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Type Nmae</label>
+                        <input class="form-control" id="typename" placeholder="Type Name">
+                    </div>
+                    <button type="button" class="btn btn-info" onclick="create_vul_type()">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
